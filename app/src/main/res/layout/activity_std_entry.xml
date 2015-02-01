@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:NumberPicker="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/lightPink"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/quick_entry_linear_layout"
+    >
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:textSize="24sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#6e6869"
+        android:text="标准创建"/>
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="#6e6869"
+            android:text="开始时间"/>
+        <net.simonvt.numberpicker.NumberPicker
+            android:id="@+id/picker01"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <net.simonvt.numberpicker.NumberPicker
+            android:id="@+id/picker02"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout2"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="#6e6869"
+            android:text="结束时间"/>
+        <net.simonvt.numberpicker.NumberPicker
+            android:id="@+id/picker11"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            />
+
+        <net.simonvt.numberpicker.NumberPicker
+
+            android:id="@+id/picker12"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edit_text1"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:hint="日程标题"/>
+
+    <EditText
+        android:id="@+id/edit_text2"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:hint="日程内容"/>
+
+
+    <EditText
+        android:id="@+id/edit_text3"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="日程提示"/>
+    <Button
+        android:layout_gravity="center_horizontal"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="60dp"
+        android:textSize="24sp"
+        android:textColor="#6e6869"
+        android:id="@+id/button_ok"
+        style="@android:style/Widget.Holo.Button.Borderless"
+        android:background="@drawable/quick_entry_button_bg"
+        android:text="完成"/>
+
+</LinearLayout>

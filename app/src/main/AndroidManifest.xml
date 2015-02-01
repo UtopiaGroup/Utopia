@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.Utopia.utopia.app" >
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".STDEntry"
+            android:label="@string/STDEntry_name" >
+        </activity>
+
+        <provider
+            android:name=".SQL.DataProvider"
+            android:authorities="com.Utopia.utopia.app.SQL.DataProvider" />
+
+        <activity
+            android:name=".HealthTipListActivity"
+            android:label="@string/title_activity_health_tip_list" >
+        </activity>
+        <activity
+            android:name=".EveryDayPushListActivity"
+            android:label="@string/title_activity_every_day_push_list" >
+        </activity>
+        <activity
+            android:name=".MemorialEventListActivity"
+            android:label="@string/title_activity_memorial_event_list" >
+        </activity>
+        <activity
+            android:name=".ArticleReadingActivity"
+            android:label="@string/title_activity_article_reading" >
+        </activity>
+    </application>
+
+</manifest>

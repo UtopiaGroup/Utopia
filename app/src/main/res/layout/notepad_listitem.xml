@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/pink"
+    >
+
+    <TextView
+        android:id="@+id/EventTextView0"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:background="@color/pink"
+        android:layout_weight="0"
+        android:minWidth="30dp"
+        />
+    <!-- 修改左侧布局间隔-->
+
+    <TextView
+        android:id="@+id/EventTextViewM"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|left"
+        android:textSize="10sp"
+        android:layout_margin="3dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="@android:color/black"
+        android:background="@drawable/event_yellow"
+        android:layout_weight="10"
+        />
+
+    <!-- 等待.9的背景文件ing-->
+
+    <TextView
+        android:id="@+id/EventTextView1"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:background="@color/pink"
+        android:layout_weight="0"
+        android:minWidth="30dp"
+        />
+    <!-- 修改右侧布局间隔-->
+
+</LinearLayout>
+

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/lightPink">
+    <ViewFlipper
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:persistentDrawingCache="animation"
+        android:flipInterval="1000"
+        android:id="@+id/page2ViewFlipper">
+
+        <com.Utopia.utopia.app.TimeLineScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/page2Scroll0">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1"
+                >
+                <com.Utopia.utopia.app.EveryDayPushViewPager
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_weight="0.2"
+                    android:id="@+id/page2EveryDayPushViewPager0"></com.Utopia.utopia.app.EveryDayPushViewPager>
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/page2Scroll0BothLayout"
+                    android:layout_weight="0.8">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/page2Scroll0TipLayout"></LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/page2Scroll0TimeLine" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:id="@+id/page2Scroll0ScheduleLayout"></LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.Utopia.utopia.app.TimeLineScrollView>
+
+        <com.Utopia.utopia.app.TimeLineScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/page2Scroll1">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1">
+                <com.Utopia.utopia.app.EveryDayPushViewPager
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_weight="0.2"
+                    android:id="@+id/page2EveryDayPushViewPager1"></com.Utopia.utopia.app.EveryDayPushViewPager>
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/page2Scroll1BothLayout"
+                    android:layout_weight="0.8">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/page2Scroll1TipLayout"></LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/page2Scroll1TimeLine" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:id="@+id/page2Scroll1ScheduleLayout"></LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.Utopia.utopia.app.TimeLineScrollView>
+
+        <com.Utopia.utopia.app.TimeLineScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/page2Scroll2">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1">
+                <com.Utopia.utopia.app.EveryDayPushViewPager
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_weight="0.2"
+                    android:id="@+id/page2EveryDayPushViewPager2"></com.Utopia.utopia.app.EveryDayPushViewPager>
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/page2Scroll2BothLayout"
+                    android:layout_weight="0.8">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/page2Scroll2TipLayout"></LinearLayout>
+
+                    <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                        android:id="@+id/page2Scroll2TimeLine" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:id="@+id/page2Scroll2ScheduleLayout"></LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.Utopia.utopia.app.TimeLineScrollView>
+    </ViewFlipper>
+</LinearLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="lightPink">#e3d3d0</color>
+    <color name="blue_event">#ccccff</color>
+    <color name="yellow_event">#ffffcc</color>
+    <color name="darkPink">#d16a7a</color>
+</resources>
