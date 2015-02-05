@@ -22,5 +22,6 @@
     <string name="page2_title">粉黛行</string>
     <string name="page3_title">胭脂匣</string>
     <string name="title_activity_article_reading">ArticleReadingActivity</string>
+    <string name="error">Error</string>
 
 </resources>
