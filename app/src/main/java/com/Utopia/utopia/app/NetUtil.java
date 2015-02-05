@@ -2,6 +2,7 @@ package com.Utopia.utopia.app;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -20,17 +21,24 @@ public class NetUtil {
     public static final int KIND_SCHEDULE = DataProviderMetaData.DataTableMetaData.KIND_SCHEDULE;
     public static final int KIND_TIP = DataProviderMetaData.DataTableMetaData.KIND_TIP;
     public static final int KIND_ADVERTISE = DataProviderMetaData.DataTableMetaData.KIND_ADVERTISE;
+    public static final String SETNAME = "setting_infos";
 
     public static final String WEBHOME = "http://123.57.252.155:3000/";
     public static final String TAG = "NetUtil";
 
     public ContentResolver cr;
+    public SharedPreferences sp;
 
-    public NetUtil(ContentResolver cr) {
+    String old_tipList, old_advertiseList;
+
+    public NetUtil(ContentResolver cr, SharedPreferences sp) {
         this.cr = cr;
+        this.sp = sp;
     }
 
     public void update() {
+        old_tipList = sp.getString("tipList", "");
+        old_advertiseList = sp.getString("advertiseList", "");
         getTipList();
         getAdvertiseList();
     }
@@ -39,14 +47,16 @@ public class NetUtil {
         String data = getNetTxt("TipList.txt");
         String[] tipList = data.split("\n");
         for (String i : tipList)
-            getTip(i);
+            if (!old_tipList.contains("i")) getTip(i);
+        sp.edit().putString("tipList", data).apply();
     }
 
     public void getAdvertiseList() {
         String data = getNetTxt("AdvertiseList.txt");
         String[] advertiseList = data.split("\n");
         for (String i : advertiseList)
-            getAdvertise(i);
+            if (!old_advertiseList.contains(i)) getAdvertise(i);
+        sp.edit().putString("advertiseList", data).apply();
     }
 
     public void getTip(String link) {

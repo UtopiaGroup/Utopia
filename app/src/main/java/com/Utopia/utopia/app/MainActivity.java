@@ -34,6 +34,8 @@ public class MainActivity extends FragmentActivity {
     public static final int KIND_SCHEDULE = DataProviderMetaData.DataTableMetaData.KIND_SCHEDULE;
     public static final int KIND_TIP = DataProviderMetaData.DataTableMetaData.KIND_TIP;
     public static final int KIND_ADVERTISE = DataProviderMetaData.DataTableMetaData.KIND_ADVERTISE;
+    public static final String SETNAME = "Utopia";
+
     ContentResolver cr;
 
     private void getOverflowMenu() {
@@ -63,17 +65,13 @@ public class MainActivity extends FragmentActivity {
         cr = getContentResolver();
 
         Boolean isFirstIn = false;
-        SharedPreferences pref = getSharedPreferences("Utopia", 0);
+        SharedPreferences pref = getSharedPreferences(SETNAME, 0);
         //取得相应的值，如果没有该值，说明还未写入，用true作为默认值
         isFirstIn = pref.getBoolean("isFirstIn", true);
 
         if (isFirstIn) {
-            initAdvertise();
-            initTip();
-
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putBoolean("isFirstIn", false);
-            editor.commit();
+            new NetUtil(cr, pref).update();
+            pref.edit().putBoolean("isFirstIn", false).apply();
         }
 
         PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagertab);
@@ -103,213 +101,6 @@ public class MainActivity extends FragmentActivity {
 
         mViewPager.setCurrentItem(2);
         mViewPager.setOffscreenPageLimit(4);
-    }
-
-
-    void initAdvertise() {
-        long beginTime = 20150110120000L;
-        long endTime = 20150211120000L;
-        long day = 1000000L;
-        int loop = 3;
-        try {
-            Bitmap source = BitmapFactory.decodeResource(getResources(), R.raw.data1pic);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            source.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            byte[] buffer = byteArrayOutputStream.toByteArray();
-            long kind = KIND_ADVERTISE;
-            String title = "仙人球满身刺_养生美容呵护您";
-
-            InputStream in = getResources().openRawResource(R.raw.data1);
-            int length = in.available();
-            byte[] buffer2 = new byte[length];
-            in.read(buffer2);
-            String value = EncodingUtils.getString(buffer2, "UTF-8");
-            Log.i("value",value);
-            in.close();
-
-            for (long begin = beginTime;begin <endTime;begin += day*loop) {
-                ContentValues cv = new ContentValues();
-                cv.put("begin", begin);
-                cv.put("kind", kind);
-                cv.put("edpv", buffer);
-                cv.put("title", title);
-                cv.put("value",value);
-                cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            Bitmap source = BitmapFactory.decodeResource(getResources(), R.raw.data2pic);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            source.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            byte[] buffer = byteArrayOutputStream.toByteArray();
-
-            long kind = KIND_ADVERTISE;
-            String title = "高跟鞋女人的养生美容法";
-            InputStream in = getResources().openRawResource(R.raw.data2);
-            int length = in.available();
-            byte[] buffer2 = new byte[length];
-            in.read(buffer2);
-            String value = EncodingUtils.getString(buffer2, "UTF-8");
-            in.close();
-            for (long begin = beginTime;begin <endTime;begin += day*loop) {
-                ContentValues cv = new ContentValues();
-                cv.put("begin", begin);
-                cv.put("kind", kind);
-                cv.put("edpv", buffer);
-                cv.put("title", title);
-                cv.put("value",value);
-                cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            Bitmap source = BitmapFactory.decodeResource(getResources(), R.raw.data3pic);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            source.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            byte[] buffer = byteArrayOutputStream.toByteArray();
-
-            long kind = KIND_ADVERTISE;
-            String title = "保护好双脚_老中医十个养肾妙招";
-            InputStream in = getResources().openRawResource(R.raw.data3);
-            int length = in.available();
-            byte[] buffer2 = new byte[length];
-            in.read(buffer2);
-            String value = EncodingUtils.getString(buffer2, "UTF-8");
-            in.close();
-            for (long begin = beginTime+day;begin <endTime;begin += day*loop) {
-                ContentValues cv = new ContentValues();
-                cv.put("begin", begin);
-                cv.put("kind", kind);
-                cv.put("edpv", buffer);
-                cv.put("title", title);
-                cv.put("value",value);
-                cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            Bitmap source = BitmapFactory.decodeResource(getResources(), R.raw.data4pic);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            source.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            byte[] buffer = byteArrayOutputStream.toByteArray();
-
-            long kind = KIND_ADVERTISE;
-            String title = "祛痘佳品_柚子脐橙可养生美容";
-            InputStream in = getResources().openRawResource(R.raw.data4);
-            int length = in.available();
-            byte[] buffer2 = new byte[length];
-            in.read(buffer2);
-            String value = EncodingUtils.getString(buffer2, "UTF-8");
-            in.close();
-            for (long begin = beginTime+day;begin <endTime;begin += day*loop) {
-                ContentValues cv = new ContentValues();
-                cv.put("begin", begin);
-                cv.put("kind", kind);
-                cv.put("edpv", buffer);
-                cv.put("title", title);
-                cv.put("value",value);
-                cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            Bitmap source = BitmapFactory.decodeResource(getResources(), R.raw.data5pic);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            source.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            byte[] buffer = byteArrayOutputStream.toByteArray();
-
-            long kind = KIND_ADVERTISE;
-            String title = "西瓜皮的营养成分和美容作用";
-            InputStream in = getResources().openRawResource(R.raw.data5);
-            int length = in.available();
-            byte[] buffer2 = new byte[length];
-            in.read(buffer2);
-            String value = EncodingUtils.getString(buffer2, "UTF-8");
-            in.close();
-            for (long begin = beginTime+2*day;begin <endTime;begin += day*loop) {
-                ContentValues cv = new ContentValues();
-                cv.put("begin", begin);
-                cv.put("kind", kind);
-                cv.put("edpv", buffer);
-                cv.put("title", title);
-                cv.put("value",value);
-                cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            Bitmap source = BitmapFactory.decodeResource(getResources(), R.raw.data6pic);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            source.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            byte[] buffer = byteArrayOutputStream.toByteArray();
-
-            long kind = KIND_ADVERTISE;
-            String title = "98岁老中医给每个职场人的长寿建议";
-            InputStream in = getResources().openRawResource(R.raw.data6);
-            int length = in.available();
-            byte[] buffer2 = new byte[length];
-            in.read(buffer2);
-            String value = EncodingUtils.getString(buffer2, "UTF-8");
-            in.close();
-            for (long begin = beginTime+2*day;begin <endTime;begin += day*loop) {
-                ContentValues cv = new ContentValues();
-                cv.put("begin", begin);
-                cv.put("kind", kind);
-                cv.put("edpv", buffer);
-                cv.put("title", title);
-                cv.put("value",value);
-                cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    void initTip() {
-        String res = "";
-        try {
-            InputStream in = getResources().openRawResource(R.raw.tip_month);
-            int length = in.available();
-            byte[] buffer = new byte[length];
-            in.read(buffer);
-            res = EncodingUtils.getString(buffer, "UTF-8");
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String[] lines = res.split("\n");
-        for (int i = 0; i < lines.length; i += 3) {
-            long kind = KIND_TIP;
-            long begin = Long.parseLong(lines[i]) * 1000000L + 120000L;
-            String title = lines[i + 1];
-
-            ContentValues cv = new ContentValues();
-            cv.put("begin", begin);
-            cv.put("kind", kind);
-            cv.put("title", title);
-
-            cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
-
-            title = lines[i + 2];
-
-            cv = new ContentValues();
-            cv.put("begin", begin);
-            cv.put("kind", kind);
-            cv.put("title", title);
-
-            cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
-        }
     }
 
     //适配器
