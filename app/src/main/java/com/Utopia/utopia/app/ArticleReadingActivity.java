@@ -40,8 +40,8 @@ public class ArticleReadingActivity extends Activity {
         imageView = (ImageView)findViewById(R.id.article_image);
 
 
-        setImageViewSrc(bundle.getString("value"));
-        setArticleSrc(bundle.getString("value"));
+        setImageViewSrc(bundle.getString("value") + "pic.jpg");
+        setArticleSrc(bundle.getString("value") + ".txt");
     }
 
     public void setArticleSrc(String link) {

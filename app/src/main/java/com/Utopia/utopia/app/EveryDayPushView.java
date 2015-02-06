@@ -44,7 +44,7 @@ public class EveryDayPushView extends RelativeLayout {
         init();
         final Bundle mMap = map;
         setText(map.getString("title"));
-        setImageViewSrc(map.getString("value"));
+        setImageViewSrc(map.getString("value") + "pic.jpg");
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
