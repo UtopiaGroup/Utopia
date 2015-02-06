@@ -41,14 +41,13 @@ public class EveryDayPushListActivity extends Activity {
 
         cr = getContentResolver();
         Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind", "myhint", "edpv"}, "kind = " + KIND_ADVERTISE,
+                "end", "finish", "kind", "myhint"}, "kind = " + KIND_ADVERTISE,
                 null, "begin DESC");
         listResource.clear();
         while (cursor.moveToNext()) {
             Bundle map = new Bundle();
             long created, modified, begin, end, finish, kind;
             String title, value, hint;
-            byte[] edpv;
 
             created = cursor.getLong(cursor.getColumnIndex("created"));
             modified = cursor.getLong(cursor.getColumnIndex("modified"));
@@ -59,7 +58,6 @@ public class EveryDayPushListActivity extends Activity {
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
             hint = cursor.getString(cursor.getColumnIndex("myhint"));
-            edpv = cursor.getBlob(cursor.getColumnIndex("edpv"));
 
             map.putLong("created", created);
             map.putLong("modified", modified);
@@ -71,11 +69,10 @@ public class EveryDayPushListActivity extends Activity {
             map.putLong("finish", finish);
             map.putLong("kind", kind);
             map.putString("myhint", hint);
-            map.putByteArray("edpv", edpv);
 
             listResource.add(map);
         }
-        sa = new EveryDayPushListItemAdapter(getApplicationContext(), listResource, R.layout.every_day_push_view_pager, null, null);
+        sa = new EveryDayPushListItemAdapter(this, listResource, R.layout.every_day_push_view_pager, null, null);
         lv0.setAdapter(sa);
         cursor.close();
     }

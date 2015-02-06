@@ -47,8 +47,6 @@ public class DataProvider extends ContentProvider {
                 DataProviderMetaData.DataTableMetaData.DATA_KIND);
         sDataProjectionMap.put(DataProviderMetaData.DataTableMetaData.DATA_HINT,
                 DataProviderMetaData.DataTableMetaData.DATA_HINT);
-        sDataProjectionMap.put(DataProviderMetaData.DataTableMetaData.DATA_BITMAP,
-                DataProviderMetaData.DataTableMetaData.DATA_BITMAP);
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -69,8 +67,7 @@ public class DataProvider extends ContentProvider {
                     + DataProviderMetaData.DataTableMetaData.DATA_END + " INTEGER, "
                     + DataProviderMetaData.DataTableMetaData.DATA_FINISH + " INTEGER, "
                     + DataProviderMetaData.DataTableMetaData.DATA_KIND + " INTEGER, "
-                    + DataProviderMetaData.DataTableMetaData.DATA_HINT + " INTEGER, "
-                    + DataProviderMetaData.DataTableMetaData.DATA_BITMAP + " BLOB" + ");");
+                    + DataProviderMetaData.DataTableMetaData.DATA_HINT + " INTEGER" + ");");
         }
 
         @Override
@@ -140,8 +137,6 @@ public class DataProvider extends ContentProvider {
             values.put(DataProviderMetaData.DataTableMetaData.DATA_KIND, DataProviderMetaData.DataTableMetaData.KIND_NONE);
         if (values.containsKey(DataProviderMetaData.DataTableMetaData.DATA_HINT) == false)
             values.put(DataProviderMetaData.DataTableMetaData.DATA_HINT, "");
-        if (values.containsKey(DataProviderMetaData.DataTableMetaData.DATA_BITMAP) == false)
-            values.put(DataProviderMetaData.DataTableMetaData.DATA_BITMAP, new byte[]{});
 
 
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();

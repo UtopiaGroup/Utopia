@@ -1,7 +1,9 @@
 package com.Utopia.utopia.app;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,26 +23,29 @@ public class NetUtil {
     public static final int KIND_SCHEDULE = DataProviderMetaData.DataTableMetaData.KIND_SCHEDULE;
     public static final int KIND_TIP = DataProviderMetaData.DataTableMetaData.KIND_TIP;
     public static final int KIND_ADVERTISE = DataProviderMetaData.DataTableMetaData.KIND_ADVERTISE;
-    public static final String SETNAME = "setting_infos";
+    public static final String SETNAME = "Utopia";
 
     public static final String WEBHOME = "http://123.57.252.155:3000/";
     public static final String TAG = "NetUtil";
 
     public ContentResolver cr;
     public SharedPreferences sp;
+    public Activity context;
 
-    String old_tipList, old_advertiseList;
+    String old_tipList, old_advertiseList, old_resourceList;
 
-    public NetUtil(ContentResolver cr, SharedPreferences sp) {
-        this.cr = cr;
-        this.sp = sp;
+    public NetUtil(Activity context) {
+        this.cr = context.getContentResolver();
+        this.sp = context.getSharedPreferences(SETNAME, 0);
+        this.context = context;
     }
 
     public void update() {
         old_tipList = sp.getString("tipList", "");
         old_advertiseList = sp.getString("advertiseList", "");
-        getTipList();
+        getResourceList();
         getAdvertiseList();
+        getTipList();
     }
 
     public void getTipList() {
@@ -59,10 +64,18 @@ public class NetUtil {
         sp.edit().putString("advertiseList", data).apply();
     }
 
+    public void getResourceList() {
+        String data = getNetTxt("ResourceList.txt");
+        String[] resourceList = data.split("\n");
+        for (String i : resourceList)
+            if (!old_resourceList.contains(i)) getResource(i);
+        sp.edit().putString("resourceList", data).apply();
+    }
+
     public void getTip(String link) {
         //获取一个月的Tip
-        String txtlink = "Tip/" + link + ".txt";
-        String data = getNetTxt(txtlink);
+        link = "Tip/" + link + ".txt";
+        String data = getNetTxt(link);
         String[] lines = data.split("\n");
         for (int i = 0; i < lines.length; i += 3) {
             long kind = KIND_TIP;
@@ -88,36 +101,39 @@ public class NetUtil {
     }
 
     public void getAdvertise(String link) {
+        //获取一个月的Advertise
+        link = "Advertise/" + link + ".txt";
+        String data = getNetTxt(link);
+        String[] lines = data.split("\n");
+        for (int i = 0; i < lines.length; i += 3) {
+            long kind = KIND_ADVERTISE;
+            long begin = Long.parseLong(lines[i]) * 1000000L + 120000L;
+
+            ContentValues cv = new ContentValues();
+            cv.put("begin", begin);
+            cv.put("kind", kind);
+            cv.put("title", lines[i + 1]);
+            cv.put("value", lines[i + 2]);
+
+            cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
+        }
+    }
+
+    public void getResource(String link) {
         //获取一个Advertise
-        String txtlink = "Advertise/" + link + ".txt";
-        String piclink = "Advertise/" + link + "pic.jpg";
-        long beginTime = 20150110120000L;
-        long endTime = 20150211120000L;
-        long day = 1000000L;
-        int loop = 3;
+        String txtlink = "Resource/" + link + ".txt";
+        String piclink = "Resource/" + link + "pic.jpg";
         try {
             Bitmap source = getNetImg(piclink);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             source.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
             byte[] buffer = byteArrayOutputStream.toByteArray();
-            long kind = KIND_ADVERTISE;
-
-            String title = link;
             String value = getNetTxt(txtlink);
-
-            for (long begin = beginTime;begin <endTime;begin += day*loop) {
-                ContentValues cv = new ContentValues();
-                cv.put("begin", begin);
-                cv.put("kind", kind);
-                cv.put("edpv", buffer);
-                cv.put("title", title);
-                cv.put("value",value);
-                cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
-            }
+            context.openFileOutput(link + ".txt", Context.MODE_PRIVATE).write(value.getBytes());
+            context.openFileOutput(link + "pic.jpg", Context.MODE_PRIVATE).write(buffer);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public String getNetTxt(String link) {

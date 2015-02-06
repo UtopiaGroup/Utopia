@@ -218,22 +218,6 @@ public class ViewPagerFragment2 extends Fragment {
                     return false;
                 }
             });
-            /*
-            Scroll[i].setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Log.i("onLongClick","");
-                    qe = new QuickEntry(getActivity());
-                    qe.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            addEvent(qe.getContent());
-                        }
-                    });
-                    return false;
-                }
-            });
-            */
         }
         TipMap0 = new TreeMap<String, LinearLayout>();
         TipMap1 = new TreeMap<String, LinearLayout>();
@@ -278,7 +262,6 @@ public class ViewPagerFragment2 extends Fragment {
     void addEvent(Bundle map) {
         long created, modified, begin, end, finish, kind;
         String title, value, hint;
-        byte[] edpv;
         created = Long.valueOf(String.valueOf(map.get("created")));
         modified = Long.valueOf(String.valueOf(map.get("modified")));
         begin = Long.valueOf(String.valueOf(map.get("begin")));
@@ -288,7 +271,6 @@ public class ViewPagerFragment2 extends Fragment {
         title = String.valueOf(map.get("title"));
         value = String.valueOf(map.get("value"));
         hint = String.valueOf(map.get("myhint"));
-        edpv = map.getByteArray("edpv");
 
         if (begin % 1000000 < startTime * 10000)
             begin = begin % 1000000 + TimeUtil.getTomorrow(currentTime);
@@ -312,7 +294,6 @@ public class ViewPagerFragment2 extends Fragment {
         cv.put("title", title);
         cv.put("value", value);
         cv.put("myhint", hint);
-        cv.put("edpv", edpv);
 
         cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
 
@@ -403,7 +384,7 @@ public class ViewPagerFragment2 extends Fragment {
         LinearLayout newTip = (LinearLayout) flater.inflate(R.layout.tip_view, TipLayout, false);
         long created, modified, begin, end, finish, kind;
         String title, value, hint;
-        byte[] edpv;
+
         created = Long.valueOf(String.valueOf(map.get("created")));
         modified = Long.valueOf(String.valueOf(map.get("modified")));
         begin = Long.valueOf(String.valueOf(map.get("begin")));
@@ -413,7 +394,6 @@ public class ViewPagerFragment2 extends Fragment {
         title = String.valueOf(map.get("title"));
         value = String.valueOf(map.get("value"));
         hint = String.valueOf(map.get("myhint"));
-        edpv = map.getByteArray("edpv");
 
         TextView tv = (TextView) newTip.findViewById(R.id.tip_text_view);
         tv.setText(title);
@@ -470,7 +450,6 @@ public class ViewPagerFragment2 extends Fragment {
         LinearLayout newSchedule = (LinearLayout) flater.inflate(R.layout.time_line_item, ScheduleLayout, false);
         long created, modified, begin, end, finish, kind;
         String title, value, hint;
-        byte[] edpv;
         created = Long.valueOf(String.valueOf(map.get("created")));
         modified = Long.valueOf(String.valueOf(map.get("modified")));
         begin = Long.valueOf(String.valueOf(map.get("begin")));
@@ -480,7 +459,6 @@ public class ViewPagerFragment2 extends Fragment {
         title = String.valueOf(map.get("title"));
         value = String.valueOf(map.get("value"));
         hint = String.valueOf(map.get("myhint"));
-        edpv = map.getByteArray("edpv");
 
         TextView tvContent = (TextView) newSchedule.findViewById(R.id.time_line_item_content);
         TextView tvBeginTime = (TextView) newSchedule.findViewById(R.id.time_line_item_start_time);
@@ -531,14 +509,13 @@ public class ViewPagerFragment2 extends Fragment {
         todayTime = TimeUtil.getToday(todayTime) + startTime * 10000;
         double tomorrowTime = TimeUtil.getTomorrow(todayTime) + startTime * 10000;
         Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind", "myhint", "edpv"}, "kind = " + KIND_SCHEDULE +
+                "end", "finish", "kind", "myhint"}, "kind = " + KIND_SCHEDULE +
                 " AND " + "(begin < " + tomorrowTime +
                 " AND " + "begin >= " + todayTime + ")", null, "begin ASC");
         while (cursor.moveToNext()) {
             Bundle map = new Bundle();
             long created, modified, begin, end, finish, kind;
             String title, value, hint;
-            byte[] edpv;
 
             created = cursor.getLong(cursor.getColumnIndex("created"));
             modified = cursor.getLong(cursor.getColumnIndex("modified"));
@@ -549,7 +526,6 @@ public class ViewPagerFragment2 extends Fragment {
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
             hint = cursor.getString(cursor.getColumnIndex("myhint"));
-            edpv = cursor.getBlob(cursor.getColumnIndex("edpv"));
 
             map.putLong("created", created);
             map.putLong("modified", modified);
@@ -560,20 +536,18 @@ public class ViewPagerFragment2 extends Fragment {
             map.putLong("finish", finish);
             map.putLong("kind", kind);
             map.putString("myhint", hint);
-            map.putByteArray("edpv", edpv);
 
             insertSchedule(map, ScheduleLayout, ScheduleMap);
         }
         cursor.close();
         cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind", "myhint", "edpv"}, "kind = " + KIND_ADVERTISE +
+                "end", "finish", "kind", "myhint"}, "kind = " + KIND_ADVERTISE +
                 " AND " + "(begin < " + tomorrowTime +
                 " AND " + "begin >= " + todayTime + ")", null, "begin asc");
         while (cursor.moveToNext()) {
             Bundle map = new Bundle();
             long created, modified, begin, end, finish, kind;
             String title, value, hint;
-            byte[] edpv;
 
             created = cursor.getLong(cursor.getColumnIndex("created"));
             modified = cursor.getLong(cursor.getColumnIndex("modified"));
@@ -584,7 +558,6 @@ public class ViewPagerFragment2 extends Fragment {
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
             hint = cursor.getString(cursor.getColumnIndex("myhint"));
-            edpv = cursor.getBlob(cursor.getColumnIndex("edpv"));
 
 
             map.putLong("created", created);
@@ -596,21 +569,19 @@ public class ViewPagerFragment2 extends Fragment {
             map.putLong("finish", finish);
             map.putLong("kind", kind);
             map.putString("myhint", hint);
-            map.putByteArray("edpv", edpv);
 
             insertAdvertise(map, edpvPagerAdapter);
         }
         cursor.close();
 
         cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind", "myhint", "edpv"}, "kind = " + KIND_TIP +
+                "end", "finish", "kind", "myhint"}, "kind = " + KIND_TIP +
                 " AND " + "(begin < " + tomorrowTime +
                 " AND " + "begin >= " + todayTime + ")", null, "begin asc");
         while (cursor.moveToNext()) {
             Bundle map = new Bundle();
             long created, modified, begin, end, finish, kind;
             String title, value, hint;
-            byte[] edpv;
 
             created = cursor.getLong(cursor.getColumnIndex("created"));
             modified = cursor.getLong(cursor.getColumnIndex("modified"));
@@ -621,7 +592,6 @@ public class ViewPagerFragment2 extends Fragment {
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
             hint = cursor.getString(cursor.getColumnIndex("myhint"));
-            edpv = cursor.getBlob(cursor.getColumnIndex("edpv"));
 
             map.putLong("created", created);
             map.putLong("modified", modified);
@@ -632,7 +602,6 @@ public class ViewPagerFragment2 extends Fragment {
             map.putLong("finish", finish);
             map.putLong("kind", kind);
             map.putString("myhint", hint);
-            map.putByteArray("edpv", edpv);
 
             insertTip(map, TipLayout, TipMap);
         }
@@ -677,6 +646,7 @@ public class ViewPagerFragment2 extends Fragment {
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

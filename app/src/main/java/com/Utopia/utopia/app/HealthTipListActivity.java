@@ -53,7 +53,7 @@ public class HealthTipListActivity extends Activity {
             listResource.add(map);
         }
 
-        sa = new HealthTipListItemAdapter(getApplicationContext(), listResource, R.layout.health_tip_list_item, null, null);
+        sa = new HealthTipListItemAdapter(this, listResource, R.layout.health_tip_list_item, null, null);
         lv0.setAdapter(sa);
         cursor.close();
     }

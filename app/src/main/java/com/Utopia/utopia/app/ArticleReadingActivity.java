@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapRegionDecoder;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,10 +13,18 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.http.util.EncodingUtils;
 import org.w3c.dom.Text;
+
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 
 public class ArticleReadingActivity extends Activity {
+
+    ImageView imageView;
+    TextView articleContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +36,41 @@ public class ArticleReadingActivity extends Activity {
         TextView articleTitle = (TextView)findViewById(R.id.article_title);
         String title = bundle.getString("title");
         articleTitle.setText(title);
-        TextView articleContent = (TextView)findViewById(R.id.article_content);
-        String value = bundle.getString("value");
-        articleContent.setText(value);
-        ImageView imageView = (ImageView)findViewById(R.id.article_image);
-        byte[] edpv = bundle.getByteArray("edpv");
-        Bitmap bitmap = BitmapFactory.decodeByteArray(edpv,0,edpv.length);
-        imageView.setImageBitmap(bitmap);
+        articleContent = (TextView)findViewById(R.id.article_content);
+        imageView = (ImageView)findViewById(R.id.article_image);
 
 
+        setImageViewSrc(bundle.getString("value"));
+        setArticleSrc(bundle.getString("value"));
     }
 
+    public void setArticleSrc(String link) {
+        try {
+            FileInputStream fin = openFileInput(link);
+            //获取文件长度
+            int length = fin.available();
+            byte[] in = new byte[length];
+            fin.read(in);
+            articleContent.setText(EncodingUtils.getString(in, "UTF-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setImageViewSrc(String link) {
+        try {
+            FileInputStream fin = openFileInput(link);
+            //获取文件长度
+            int length = fin.available();
+            byte[] in = new byte[length];
+            fin.read(in);
+            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(new ByteArrayInputStream(in), true);
+            Bitmap bitmap = decoder.decodeRegion(new Rect(0, 0, decoder.getWidth(), decoder.getHeight()), null);
+            imageView.setImageBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

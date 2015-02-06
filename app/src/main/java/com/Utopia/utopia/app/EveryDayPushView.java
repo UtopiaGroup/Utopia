@@ -1,5 +1,6 @@
 package com.Utopia.utopia.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,7 +15,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.util.EncodingUtils;
+
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
@@ -39,8 +43,8 @@ public class EveryDayPushView extends RelativeLayout {
         super(context);
         init();
         final Bundle mMap = map;
-        setText(String.valueOf(map.get("title")));
-        setImageViewSrc(map.getByteArray("edpv"));
+        setText(map.getString("title"));
+        setImageViewSrc(map.getString("value"));
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,8 +67,13 @@ public class EveryDayPushView extends RelativeLayout {
         textView.setText(string);
     }
 
-    public void setImageViewSrc(byte[] in) {
+    public void setImageViewSrc(String link) {
         try {
+            FileInputStream fin = getContext().openFileInput(link);
+            //获取文件长度
+            int length = fin.available();
+            byte[] in = new byte[length];
+            fin.read(in);
             BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(new ByteArrayInputStream(in), true);
             Bitmap bitmap = decoder.decodeRegion(new Rect(0, 0, decoder.getWidth(), decoder.getHeight()), null);
             imageView.setImageBitmap(bitmap);

@@ -70,7 +70,7 @@ public class MainActivity extends FragmentActivity {
         isFirstIn = pref.getBoolean("isFirstIn", true);
 
         if (isFirstIn) {
-            new NetUtil(cr, pref).update();
+            new NetUtil(this).update();
             pref.edit().putBoolean("isFirstIn", false).apply();
         }
 
@@ -203,7 +203,6 @@ public class MainActivity extends FragmentActivity {
                         map.putLong("finish", bundle.getLong("finish"));
                         map.putLong("kind", bundle.getLong("kind"));
                         map.putString("myhint", bundle.getString("myhint"));
-                        map.putByteArray("bitmap", bundle.getByteArray("bitmap"));
 
                         addEvent(map);
                     }

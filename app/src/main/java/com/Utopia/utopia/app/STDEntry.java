@@ -99,7 +99,6 @@ public class STDEntry extends Activity{
             public void onClick(View v) {
                 long created, modified, begin, end, finish, kind,
                         beginHour, beginMinute, endHour, endMinute;
-                byte[] edpv = {};
                 String title, value, hint;
                 beginHour = picker01.getValue();
                 beginMinute = picker02.getValue();
@@ -133,7 +132,6 @@ public class STDEntry extends Activity{
                 intent.putExtra("finish", finish);
                 intent.putExtra("kind", kind);
                 intent.putExtra("myhint", hint);
-                intent.putExtra("edpv", edpv);
                 finish();
             }
         });
