@@ -43,6 +43,7 @@ public class NetUtil {
     public void update() {
         old_tipList = sp.getString("tipList", "");
         old_advertiseList = sp.getString("advertiseList", "");
+        old_resourceList = sp.getString("resourceList", "");
         getResourceList();
         getAdvertiseList();
         getTipList();
@@ -68,7 +69,8 @@ public class NetUtil {
         String data = getNetTxt("ResourceList.txt");
         String[] resourceList = data.split("\n");
         for (String i : resourceList)
-            if (!old_resourceList.contains(i)) getResource(i);
+            if (!old_resourceList.contains(i))
+                getResource(i);
         sp.edit().putString("resourceList", data).apply();
     }
 

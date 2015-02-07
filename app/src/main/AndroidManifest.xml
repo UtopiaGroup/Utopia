@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.Utopia.utopia.app" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -26,7 +28,6 @@
         <provider
             android:name=".SQL.DataProvider"
             android:authorities="com.Utopia.utopia.app.SQL.DataProvider" />
-
         <activity
             android:name=".HealthTipListActivity"
             android:label="@string/title_activity_health_tip_list" >
@@ -34,10 +35,6 @@
         <activity
             android:name=".EveryDayPushListActivity"
             android:label="@string/title_activity_every_day_push_list" >
-        </activity>
-        <activity
-            android:name=".MemorialEventListActivity"
-            android:label="@string/title_activity_memorial_event_list" >
         </activity>
         <activity
             android:name=".ArticleReadingActivity"

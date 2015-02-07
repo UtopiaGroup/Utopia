@@ -70,8 +70,20 @@ public class MainActivity extends FragmentActivity {
         isFirstIn = pref.getBoolean("isFirstIn", true);
 
         if (isFirstIn) {
-            new NetUtil(this).update();
             pref.edit().putBoolean("isFirstIn", false).apply();
+        }
+        Thread netThread = new Thread() {
+            public void run() {
+                new NetUtil(MainActivity.this).update();
+            }
+        };
+        netThread.start();
+
+        //停止加载主线程，等待数据下载（可能要动画）
+        try {
+            netThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagertab);
