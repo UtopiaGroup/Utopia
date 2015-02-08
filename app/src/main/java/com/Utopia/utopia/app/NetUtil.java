@@ -53,7 +53,7 @@ public class NetUtil {
         String data = getNetTxt("TipList.txt");
         String[] tipList = data.split("\n");
         for (String i : tipList)
-            if (!old_tipList.contains("i")) getTip(i);
+            if (!old_tipList.contains(i)) getTip(i);
         sp.edit().putString("tipList", data).apply();
     }
 
