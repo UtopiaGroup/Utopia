@@ -291,8 +291,6 @@ public class ViewPagerFragment2 extends Fragment {
         title = String.valueOf(map.get("title"));
         value = String.valueOf(map.get("value"));
         hint = String.valueOf(map.get("myhint"));
-        Log.v("DEBUG", hint);
-
         if (begin % 1000000 < startTime * 10000)
             begin = begin % 1000000 + TimeUtil.getTomorrow(currentTime);
         else
@@ -318,7 +316,12 @@ public class ViewPagerFragment2 extends Fragment {
 
         cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
 
-        FromSQLToListView(TimeUtil.getToday(TimeUtil.getCurrentTime()), Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], edpvPagerAdapter[1], TipMap1, ScheduleMap1);
+        if (current == 0)
+            FromSQLToListView(currentTime, Scroll[0], BothLayout[0], TipLayout[0], ScheduleLayout[0], edpvPagerAdapter[0], TipMap0, ScheduleMap0);
+        else if (current == 1)
+            FromSQLToListView(currentTime, Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], edpvPagerAdapter[1], TipMap1, ScheduleMap1);
+        else
+            FromSQLToListView(currentTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], edpvPagerAdapter[2], TipMap2, ScheduleMap2);
         ((ViewPagerFragment1) ((MainActivity) getActivity()).fragmentList.get(1)).FromSQLToListView();
     }
 

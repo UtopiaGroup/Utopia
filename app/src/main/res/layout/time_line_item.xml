@@ -6,7 +6,6 @@
     android:background="@drawable/event_yellow"
     android:padding="10dp">
     <TextView
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/time_line_item_start_time"/>

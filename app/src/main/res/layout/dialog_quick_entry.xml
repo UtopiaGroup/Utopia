@@ -101,7 +101,7 @@
         android:id="@+id/button2"
         style="@android:style/Widget.Holo.Button.Borderless"
         android:background="@drawable/quick_entry_button_bg"
-        android:text="设置日程标题"
+        android:text="设置日程内容"
         />
 
 
@@ -113,7 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:hint="日程标题"/>
+        android:hint="日程内容"/>
     <Button
         android:layout_gravity="center_horizontal"
         android:layout_width="200dp"

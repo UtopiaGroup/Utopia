@@ -27,7 +27,7 @@ public class QuickEntry extends AlertDialog {
     EditText editText;
     NumberPicker picker01, picker02;
     NumberPicker picker11, picker12;
-    boolean setEnd = false, setTitle = false,confirmed = false;
+    boolean setEnd = false, setValue = false,confirmed = false;
 
     int hour = 0,minute = 0;
 
@@ -54,9 +54,10 @@ public class QuickEntry extends AlertDialog {
 
         created = TimeUtil.getCurrentTime();
         modified = TimeUtil.getCurrentTime();
-        if (setTitle) title = editText.getText().toString();
-        else title = "未命名";
-        value = "";
+        if (setValue) value = editText.getText().toString();
+        else value = "";
+
+        title = "未命名";
 
         begin = TimeUtil.getToday(created) + 10000 * beginHour + 100 * beginMinute;
         if (setEnd) end = TimeUtil.getToday(created) + 10000 * endHour + 100 * endMinute;
@@ -134,7 +135,7 @@ public class QuickEntry extends AlertDialog {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setTitle = true;
+                setValue = true;
                 button2.setVisibility(View.GONE);
                 editText.setVisibility(View.VISIBLE);
 
