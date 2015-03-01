@@ -139,7 +139,7 @@ public class NetUtil {
     }
 
     public String getNetTxt(String link) {
-        String result = null;
+        String result = "";
         link = WEBHOME + link;
         try {
             byte[] data = getByte(link);
