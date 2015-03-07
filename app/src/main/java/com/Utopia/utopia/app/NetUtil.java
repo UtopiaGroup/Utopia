@@ -25,7 +25,7 @@ public class NetUtil {
     public static final int KIND_ADVERTISE = DataProviderMetaData.DataTableMetaData.KIND_ADVERTISE;
     public static final String SETNAME = "Utopia";
 
-    public static final String WEBHOME = "http://123.57.252.155:3000/";
+    public static final String WEBHOME = "http://123.57.252.155/";
     public static final String TAG = "NetUtil";
 
     public ContentResolver cr;

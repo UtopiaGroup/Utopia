@@ -22,6 +22,7 @@ public class InputDialog extends AlertDialog {
     public InputDialog(Context context) {
         super(context);
     }
+    private int mChangeOne;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class InputDialog extends AlertDialog {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        mChangeOne = -1;
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,4 +56,13 @@ public class InputDialog extends AlertDialog {
         mContent = content;
         editText.setText(mContent);
     }
+
+    public void setChangeOne(int changeOne) {
+        mChangeOne = changeOne;
+    }
+
+    public int getChangeOne() {
+        return mChangeOne;
+    }
+
 }

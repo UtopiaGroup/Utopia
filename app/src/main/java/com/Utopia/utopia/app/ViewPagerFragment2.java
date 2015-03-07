@@ -12,12 +12,16 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -199,7 +203,7 @@ public class ViewPagerFragment2 extends Fragment {
                                     int minute = ((totalSecond % 3600) / 60 / 20) * 20;
                                     Log.v("quick time", " " + hour + " " + minute);
                                     qe = new QuickEntry(getActivity(), hour, minute);
-                                    Log.i("in actionUp: isScrolling", String.valueOf(Scroll[current].isScrolling()));
+                                    //Log.i("in actionUp: isScrolling", String.valueOf(Scroll[current].isScrolling()));
                                     qe.show();
                                     qe.setOnDismissListener(new DialogInterface.OnDismissListener() {
                                         @Override
@@ -235,7 +239,7 @@ public class ViewPagerFragment2 extends Fragment {
                     updateScheduleLayput(ScheduleLayout[2], ScheduleMap2);
                     updateTipLayput(TipLayout[2], TipMap2);
                 }
-                Toast.makeText(getActivity(), "全局改变并重新构建", Toast.LENGTH_LONG).show();
+                Log.v("debug", "全局改变并重新构建");
             }
         });
 
@@ -245,6 +249,8 @@ public class ViewPagerFragment2 extends Fragment {
         ScheduleMap0 = new TreeMap<String, LinearLayout>();
         ScheduleMap1 = new TreeMap<String, LinearLayout>();
         ScheduleMap2 = new TreeMap<String, LinearLayout>();
+
+        registerForContextMenu(ScheduleLayout[0]);
 
         cr = getActivity().getContentResolver();
 
@@ -272,6 +278,59 @@ public class ViewPagerFragment2 extends Fragment {
         changeTitle();
 
         return view;
+    }
+
+    class MyContextMenuInfo extends AdapterView.AdapterContextMenuInfo {
+        View mView;
+
+        public MyContextMenuInfo(View targetView, int position, long id) {
+            super(targetView, position, id);
+        }
+
+        public void setmView(View mView) {
+            this.mView = mView;
+        }
+
+        public View getmView() {
+            return mView;
+        }
+    }
+
+    public MyContextMenuInfo selectedContextMenuInfo;
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        selectedContextMenuInfo = new MyContextMenuInfo(v, -1, -1);
+        selectedContextMenuInfo.setmView(v);
+
+        super.onCreateContextMenu(menu, v, selectedContextMenuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.schedule_context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        MyContextMenuInfo info = (MyContextMenuInfo) item.getMenuInfo();
+        if (info == null) info = selectedContextMenuInfo;
+        switch (item.getItemId()) {
+            case R.id.change_schedule:
+                Log.v("debug", "the child's id = " + info.getmView());
+                deleteEvent((LinearLayout) info.getmView());
+                qe = new QuickEntry(getActivity());
+                //Log.i("in actionUp: isScrolling", String.valueOf(Scroll[current].isScrolling()));
+                qe.show();
+                qe.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        addEvent(qe.getContent());
+                    }
+                });
+                break;
+            case R.id.delete_schedule:
+                deleteEvent((LinearLayout) info.getmView());
+                break;
+            //TODO next time...
+        }
+        return super.onContextItemSelected(item);
     }
 
     void changeTitle() {
@@ -336,16 +395,16 @@ public class ViewPagerFragment2 extends Fragment {
         id = 0;
         while (it.hasNext()) {
             String key = it.next().toString();
-            ++id;
             currentCreated = Long.parseLong(key.substring(14, 28).trim());
             if (TipMap.get(key) == Layout) {
                 cr.delete(DataProviderMetaData.DataTableMetaData.CONTENT_URI,
-                        "created = " + currentCreated
+                        "_id = " + currentCreated
                                 + " AND " + "kind = " + KIND_TIP, null
                 );
                 TipLayout[current].removeViewAt((int) id);
                 TipMap.remove(key);
             }
+            ++id;
         }
 
         TreeMap<String, LinearLayout> ScheduleMap;
@@ -357,16 +416,16 @@ public class ViewPagerFragment2 extends Fragment {
         id = 0;
         while (it.hasNext()) {
             String key = it.next().toString();
-            ++id;
             currentCreated = Long.parseLong(key.substring(14, 28).trim());
             if (ScheduleMap.get(key) == Layout) {
                 cr.delete(DataProviderMetaData.DataTableMetaData.CONTENT_URI,
-                        "created = " + currentCreated
+                        "_id = " + currentCreated
                                 + " AND " + "kind = " + KIND_SCHEDULE, null
                 );
                 ScheduleLayout[current].removeViewAt((int) id);
                 ScheduleMap.remove(key);
             }
+            ++id;
         }
     }
 
@@ -439,6 +498,7 @@ public class ViewPagerFragment2 extends Fragment {
         while (it.hasNext()) {
             String key = it.next().toString();
             LinearLayout now = ScheduleMap.get(key);
+            registerForContextMenu(now);
             current = Long.parseLong(key.substring(0, 14).trim());
             current = Math.max(current, last);
 

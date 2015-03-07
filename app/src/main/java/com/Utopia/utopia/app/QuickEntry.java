@@ -40,6 +40,7 @@ public class QuickEntry extends AlertDialog {
         this.hour = hour;
         this.minute = minute;
     }
+
     Bundle getContent()
     {
         long created, modified, begin, end, finish, kind,

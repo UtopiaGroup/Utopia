@@ -54,6 +54,9 @@ public class ViewPagerFragment0 extends Fragment {
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
+                if (dialog.getChangeOne() != -1)
+                    deleteEntry(dialog.getChangeOne());
+                dialog.setChangeOne(-1);
                 addEntry(dialog.getContent());
             }
         });
@@ -65,6 +68,7 @@ public class ViewPagerFragment0 extends Fragment {
             public void onClick(View v) {
                 Log.i("Utopia", "imageClicked");
                 dialog.show();
+                dialog.setContent(" ");
 
             }
 
@@ -83,27 +87,30 @@ public class ViewPagerFragment0 extends Fragment {
             cv.put("end", marginRight);
             cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
 
-            Bundle map = new Bundle();
-            map.putString("value", value);
-            map.putLong("kind", KIND_NOTE);
-            map.putLong("created", marginLeft);
-            map.putLong("end", marginRight);
-            listResource.add(map);
+            FromSQLToListView();
             sa.notifyDataSetChanged();
         }
 
     }
 
+    public void deleteEntry(int id) {
+        long _id = listResource.get(id).getLong("_id");
+        cr.delete(DataProviderMetaData.DataTableMetaData.CONTENT_URI, "_id = " + _id, null);
+        FromSQLToListView();
+        sa.notifyDataSetChanged();
+    }
+
     public void FromSQLToListView() {
         Uri uri = DataProviderMetaData.DataTableMetaData.CONTENT_URI;
 
-        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "value", "kind", "end"},
+        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"_id", "created", "value", "kind", "end"},
                 "kind = " + KIND_NOTE, null, "created asc");
 
         //Log.i("utopia", String.valueOf(cursor == null));
         listResource.clear();
         while (cursor.moveToNext()) {
             Bundle map = new Bundle();
+            map.putLong("_id", cursor.getLong(cursor.getColumnIndex("_id")));
             map.putLong("created", cursor.getLong(cursor.getColumnIndex("created")));
             map.putString("value", cursor.getString(cursor.getColumnIndex("value")));
             map.putLong("end", cursor.getLong(cursor.getColumnIndex("end")));
@@ -127,6 +134,14 @@ public class ViewPagerFragment0 extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
+            case R.id.change_note:
+                dialog.show();
+                dialog.setContent(listResource.get((int)info.id).getString("value"));
+                dialog.setChangeOne((int)info.id);
+                break;
+            case R.id.delete_note:
+                deleteEntry((int)info.id);
+                break;
             //TODO next time...
         }
         return super.onContextItemSelected(item);

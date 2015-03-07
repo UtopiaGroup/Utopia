@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/change_note"
+    <item android:id="@+id/change_schedule"
         android:title="change"/>
 
-    <item android:id="@+id/delete_note"
+    <item android:id="@+id/delete_schedule"
         android:title="delete"/>
 </menu>
