@@ -94,6 +94,7 @@ public class ViewPagerFragment0 extends Fragment {
     }
 
     public void deleteEntry(int id) {
+        Log.i("DEBUG","delete entry");
         long _id = listResource.get(id).getLong("_id");
         cr.delete(DataProviderMetaData.DataTableMetaData.CONTENT_URI, "_id = " + _id, null);
         FromSQLToListView();
@@ -132,9 +133,10 @@ public class ViewPagerFragment0 extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        Log.i("DEBUG","in frag0 context menu");
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
-            case R.id.change_note:
+            case R.id.chaxnge_note:
                 dialog.show();
                 dialog.setContent(listResource.get((int)info.id).getString("value"));
                 dialog.setChangeOne((int)info.id);

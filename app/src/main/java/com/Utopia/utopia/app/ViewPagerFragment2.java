@@ -21,10 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -35,7 +33,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.ServiceConfigurationError;
 import java.util.TreeMap;
 
 /**
@@ -250,7 +247,7 @@ public class ViewPagerFragment2 extends Fragment {
         ScheduleMap1 = new TreeMap<String, LinearLayout>();
         ScheduleMap2 = new TreeMap<String, LinearLayout>();
 
-        registerForContextMenu(ScheduleLayout[0]);
+        //registerForContextMenu(ScheduleLayout[0]);
 
         cr = getActivity().getContentResolver();
 
@@ -280,41 +277,22 @@ public class ViewPagerFragment2 extends Fragment {
         return view;
     }
 
-    class MyContextMenuInfo extends AdapterView.AdapterContextMenuInfo {
         View mView;
 
-        public MyContextMenuInfo(View targetView, int position, long id) {
-            super(targetView, position, id);
-        }
-
-        public void setmView(View mView) {
-            this.mView = mView;
-        }
-
-        public View getmView() {
-            return mView;
-        }
-    }
-
-    public MyContextMenuInfo selectedContextMenuInfo;
-
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        selectedContextMenuInfo = new MyContextMenuInfo(v, -1, -1);
-        selectedContextMenuInfo.setmView(v);
-
-        super.onCreateContextMenu(menu, v, selectedContextMenuInfo);
+        mView = v;
+        super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.schedule_context_menu, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        MyContextMenuInfo info = (MyContextMenuInfo) item.getMenuInfo();
-        if (info == null) info = selectedContextMenuInfo;
+        Log.i("DEBUG","frag2");
         switch (item.getItemId()) {
             case R.id.change_schedule:
-                Log.v("debug", "the child's id = " + info.getmView());
-                deleteEvent((LinearLayout) info.getmView());
+                Log.v("debug", "the child's id = " + mView);
+                deleteEvent((LinearLayout) mView);
                 qe = new QuickEntry(getActivity());
                 //Log.i("in actionUp: isScrolling", String.valueOf(Scroll[current].isScrolling()));
                 qe.show();
@@ -326,7 +304,7 @@ public class ViewPagerFragment2 extends Fragment {
                 });
                 break;
             case R.id.delete_schedule:
-                deleteEvent((LinearLayout) info.getmView());
+                deleteEvent((LinearLayout) mView);
                 break;
             //TODO next time...
         }
@@ -423,7 +401,8 @@ public class ViewPagerFragment2 extends Fragment {
                                 + " AND " + "kind = " + KIND_SCHEDULE, null
                 );
                 ScheduleLayout[current].removeViewAt((int) id);
-                ScheduleMap.remove(key);
+                //ScheduleMap.remove(key);
+                it.remove();
             }
             ++id;
         }
