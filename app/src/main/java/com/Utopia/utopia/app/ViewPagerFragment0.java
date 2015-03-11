@@ -136,7 +136,7 @@ public class ViewPagerFragment0 extends Fragment {
         Log.i("DEBUG","in frag0 context menu");
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
-            case R.id.chaxnge_note:
+            case R.id.change_note:
                 dialog.show();
                 dialog.setContent(listResource.get((int)info.id).getString("value"));
                 dialog.setChangeOne((int)info.id);

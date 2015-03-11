@@ -6,6 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_add">标准创建</string>
     <string name="action_settings">设置</string>
+    <string name="action_calendar">月历</string>
     <string name="account_information">账户信息</string>
     <string name="recommend">推荐给好友</string>
     <string name="score">评分</string>
@@ -22,5 +23,6 @@
     <string name="page3_title">胭脂匣</string>
     <string name="title_activity_article_reading">ArticleReadingActivity</string>
     <string name="error">Error</string>
+    <string name="title_activity_calendar">CalendarActivity</string>
 
 </resources>

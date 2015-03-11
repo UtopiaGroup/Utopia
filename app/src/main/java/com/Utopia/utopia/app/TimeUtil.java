@@ -1,10 +1,8 @@
 package com.Utopia.utopia.app;
 
-import android.util.Log;
-
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -15,7 +13,36 @@ public class TimeUtil {
     public static int dayOfMonth[] = new int[]{
             0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
     };
+    public static long getMillisFromTime(long time)
+    {
+        long today = getToday(time);
+        long year = today / 10000000000L;
+        today %= 10000000000L;
+        long month = today / 100000000L - 1 ;
+        today %= 100000000L;
+        long date = today / 1000000L;
+        today %= 1000000L;
 
+        Calendar c = Calendar.getInstance();
+        c.set((int)year,(int)month,(int)date);
+        return c.getTimeInMillis();
+
+
+    }
+    public static long getTimeFromMillis(long millis)
+    {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date(millis));
+
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH) + 1;
+        int date = c.get(Calendar.DATE);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        int second = c.get(Calendar.SECOND);
+
+        return second + 100L * minute + 10000L * hour + 1000000L * date + 100000000L * month + 10000000000L * year;
+    }
     public static long getCurrentTime() {
         Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
 

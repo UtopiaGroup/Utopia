@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
@@ -29,6 +30,7 @@ public class MainActivity extends FragmentActivity {
     public static final String SETNAME = "Utopia";
 
     ContentResolver cr;
+    ViewPagerFragment2 viewPagerFragment2;
 
     private void getOverflowMenu() {
 
@@ -69,7 +71,7 @@ public class MainActivity extends FragmentActivity {
                 new NetUtil(MainActivity.this).update();
             }
         };
-        netThread.start();
+        //netThread.start();
 
         //停止加载主线程，等待数据下载（可能要动画）
         try {
@@ -92,6 +94,8 @@ public class MainActivity extends FragmentActivity {
         fragmentList.add(new ViewPagerFragment1());
         fragmentList.add(new ViewPagerFragment2());
         fragmentList.add(new ViewPagerFragment3());
+
+        viewPagerFragment2 = ((ViewPagerFragment2)fragmentList.get(2));
 
         titleList = new ArrayList<String>();// 每个页面的Title数据
         titleList.add(getResources().getString(R.string.page0_title));
@@ -151,6 +155,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     final public static int REQUEST_STDENTRY = 1;
+    final public static int REQUEST_CALENDAR = 2;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -161,8 +166,13 @@ public class MainActivity extends FragmentActivity {
 
         switch (id) {
             case R.id.action_add:
-                Intent intent = new Intent(MainActivity.this, STDEntry.class);
-                startActivityForResult(intent, REQUEST_STDENTRY);
+                Intent intent_STDEntry = new Intent(MainActivity.this, STDEntry.class);
+                startActivityForResult(intent_STDEntry, REQUEST_STDENTRY);
+                break;
+            case R.id.action_calendar:
+                Intent intent_Calendar = new Intent(MainActivity.this,CalendarActivity.class);
+                intent_Calendar.putExtra("currentTime",viewPagerFragment2.getCurrentTime());
+                startActivityForResult(intent_Calendar,REQUEST_CALENDAR);
                 break;
             case R.id.action_settings:
 
@@ -210,6 +220,13 @@ public class MainActivity extends FragmentActivity {
 
                         addEvent(map);
                     }
+                    break;
+                case REQUEST_CALENDAR:
+                    long millis = data.getLongExtra("millis",0);
+                    long selectedTime = TimeUtil.getTimeFromMillis(millis);
+                    Log.v("returned date",""+selectedTime);
+
+                    viewPagerFragment2.setTime(selectedTime);
                     break;
                 default:
                     break;

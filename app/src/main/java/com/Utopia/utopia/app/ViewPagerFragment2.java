@@ -213,7 +213,7 @@ public class ViewPagerFragment2 extends Fragment {
                                     Scroll[current].setScrolling(false);
                             }
 
-                            changeTitle();
+                            changeTitle(currentTime);
                             break;
                     }
                     return false;
@@ -251,29 +251,13 @@ public class ViewPagerFragment2 extends Fragment {
 
         cr = getActivity().getContentResolver();
 
-        long todayTime,
-                tomorrowTime,
-                yesterdayTime;
-
+        long todayTime;
         currentTime = TimeUtil.getCurrentTime();
         todayTime = TimeUtil.getToday(currentTime);
         if (currentTime % 1000000 < startTime * 10000) todayTime = TimeUtil.getYesterday(todayTime);
-
-        yesterdayTime = TimeUtil.getYesterday(todayTime);
-        todayTime = TimeUtil.getToday(todayTime);
-        tomorrowTime = TimeUtil.getTomorrow(todayTime);
-
         current = 1;
         currentTime = todayTime;
-
-        FromSQLToListView(yesterdayTime, Scroll[0], BothLayout[0], TipLayout[0], ScheduleLayout[0], edpvPagerAdapter[0], TipMap0, ScheduleMap0);
-
-        FromSQLToListView(todayTime, Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], edpvPagerAdapter[1], TipMap1, ScheduleMap1);
-
-        FromSQLToListView(tomorrowTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], edpvPagerAdapter[2], TipMap2, ScheduleMap2);
-
-        changeTitle();
-
+        setTime(todayTime);
         return view;
     }
 
@@ -311,8 +295,8 @@ public class ViewPagerFragment2 extends Fragment {
         return super.onContextItemSelected(item);
     }
 
-    void changeTitle() {
-        String title = TimeUtil.toLunar(currentTime);
+    void changeTitle(long todayTime) {
+        String title = TimeUtil.toLunar(todayTime);
         getActivity().setTitle(title);
     }
 
@@ -698,4 +682,23 @@ public class ViewPagerFragment2 extends Fragment {
             e.printStackTrace();
         }
     }
+
+    public void setTime(long todayTime) {
+        long yesterdayTime = TimeUtil.getYesterday(todayTime);
+        long tomorrowTime = TimeUtil.getTomorrow(todayTime);
+        FromSQLToListView(yesterdayTime, Scroll[0], BothLayout[0], TipLayout[0], ScheduleLayout[0], edpvPagerAdapter[0], TipMap0, ScheduleMap0);
+
+        FromSQLToListView(todayTime, Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], edpvPagerAdapter[1], TipMap1, ScheduleMap1);
+
+        FromSQLToListView(tomorrowTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], edpvPagerAdapter[2], TipMap2, ScheduleMap2);
+
+        changeTitle(todayTime);
+
+        currentTime = todayTime;
+    }
+
+    public long getCurrentTime() {
+        return currentTime;
+    }
+
 }

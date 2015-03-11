@@ -28,6 +28,7 @@
         <provider
             android:name=".SQL.DataProvider"
             android:authorities="com.Utopia.utopia.app.SQL.DataProvider" />
+
         <activity
             android:name=".HealthTipListActivity"
             android:label="@string/title_activity_health_tip_list" >
@@ -39,6 +40,10 @@
         <activity
             android:name=".ArticleReadingActivity"
             android:label="@string/title_activity_article_reading" >
+        </activity>
+        <activity
+            android:name=".CalendarActivity"
+            android:label="@string/title_activity_calendar" >
         </activity>
     </application>
 
