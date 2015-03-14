@@ -14,21 +14,33 @@ public class CalendarActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
         final CalendarView calendarView = (CalendarView)findViewById(R.id.calendar_view);
         Intent callerIntent = getIntent();
         long currentTime = callerIntent.getLongExtra("currentTime",0);
-        calendarView.setDate(TimeUtil.getMillisFromTime(currentTime));
+        final long millis = TimeUtil.getMillisFromTime(currentTime);
+        calendarView.setDate(millis);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date(millis));
+        final int currentYear = cal.get(Calendar.YEAR);
+        final int currentMonth = cal.get(Calendar.MONTH);
+        final int currentDayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                Intent intent = new Intent(CalendarActivity.this,MainActivity.class);
-                long millis = calendarView.getDate();
-                intent.putExtra("millis",millis);
-                setResult(RESULT_OK,intent);
-                finish();
+                long changedMillis = view.getDate();
+                if(currentYear != year || currentMonth != month || currentDayOfMonth != dayOfMonth) {
+                    Intent intent = new Intent(CalendarActivity.this,MainActivity.class);
+                    intent.putExtra("millis", changedMillis);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
         });
     }
+
 
 
     @Override
