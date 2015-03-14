@@ -24,5 +24,6 @@
     <string name="title_activity_article_reading">ArticleReadingActivity</string>
     <string name="error">Error</string>
     <string name="title_activity_calendar">CalendarActivity</string>
+    <string name="AlarmAlter_name">AlarmAlter</string>
 
 </resources>

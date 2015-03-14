@@ -107,7 +107,6 @@ public class ViewPagerFragment0 extends Fragment {
         Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"_id", "created", "value", "kind", "end"},
                 "kind = " + KIND_NOTE, null, "created asc");
 
-        //Log.i("utopia", String.valueOf(cursor == null));
         listResource.clear();
         while (cursor.moveToNext()) {
             Bundle map = new Bundle();
@@ -133,7 +132,6 @@ public class ViewPagerFragment0 extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Log.i("DEBUG","in frag0 context menu");
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.change_note:

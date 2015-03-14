@@ -6,4 +6,10 @@
 
     <item android:id="@+id/delete_schedule"
         android:title="delete"/>
+
+    <item android:id="@+id/openalarm_schedule"
+        android:title="openalarm"/>
+
+    <item android:id="@+id/closealarm_schedule"
+        android:title="closealarm"/>
 </menu>

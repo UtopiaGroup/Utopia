@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -236,7 +237,6 @@ public class ViewPagerFragment2 extends Fragment {
                     updateScheduleLayput(ScheduleLayout[2], ScheduleMap2);
                     updateTipLayput(TipLayout[2], TipMap2);
                 }
-                Log.v("debug", "全局改变并重新构建");
             }
         });
 
@@ -261,7 +261,23 @@ public class ViewPagerFragment2 extends Fragment {
         return view;
     }
 
-        View mView;
+    public void openAlarm(int id) {
+        AlarmHelper ah = new AlarmHelper(getActivity().getApplicationContext());
+        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"_id", "begin", "title", "value"}, "_id = " + id, null, "begin ASC");
+        cursor.moveToNext();
+        ah.openAlarm(id, cursor.getString(cursor.getColumnIndex("title")), cursor.getString(cursor.getColumnIndex("value")), cursor.getLong(cursor.getColumnIndex("begin")));
+        cursor.close();
+    }
+
+    public void closeAlarm(int id) {
+        AlarmHelper ah = new AlarmHelper(getActivity().getApplicationContext());
+        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"_id", "begin", "title", "value"}, "_id = " + id, null, "begin ASC");
+        cursor.moveToNext();
+        ah.closeAlarm(id, cursor.getString(cursor.getColumnIndex("title")), cursor.getString(cursor.getColumnIndex("value")));
+        cursor.close();
+    }
+
+    View mView;
 
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         mView = v;
@@ -272,24 +288,28 @@ public class ViewPagerFragment2 extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Log.i("DEBUG","frag2");
         switch (item.getItemId()) {
-            case R.id.change_schedule:
+            case R.id.change_schedule: {
                 Log.v("debug", "the child's id = " + mView);
                 deleteEvent((LinearLayout) mView);
-                qe = new QuickEntry(getActivity());
-                //Log.i("in actionUp: isScrolling", String.valueOf(Scroll[current].isScrolling()));
-                qe.show();
-                qe.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        addEvent(qe.getContent());
-                    }
-                });
+                Intent intent_STDEntry = new Intent(getActivity().getApplicationContext(), STDEntry.class);
+                getActivity().startActivityForResult(intent_STDEntry, MainActivity.REQUEST_STDENTRY);
                 break;
-            case R.id.delete_schedule:
+            }
+            case R.id.delete_schedule: {
                 deleteEvent((LinearLayout) mView);
                 break;
+            }
+            case R.id.openalarm_schedule: {
+                int id = (int) findEvent((LinearLayout) mView);
+                openAlarm(id);
+                break;
+            }
+            case R.id.closealarm_schedule: {
+                int id = (int) findEvent((LinearLayout) mView);
+                closeAlarm(id);
+                break;
+            }
             //TODO next time...
         }
         return super.onContextItemSelected(item);
@@ -346,6 +366,43 @@ public class ViewPagerFragment2 extends Fragment {
         ((ViewPagerFragment1) ((MainActivity) getActivity()).fragmentList.get(1)).FromSQLToListView();
     }
 
+
+    long findEvent(LinearLayout Layout) {
+        TreeMap<String, LinearLayout> TipMap;
+        if (current == 0) TipMap = TipMap0;
+        else if (current == 1) TipMap = TipMap1;
+        else TipMap = TipMap2;
+
+        Iterator it = TipMap.keySet().iterator();
+        long currentCreated, id;
+        id = 0;
+        while (it.hasNext()) {
+            String key = it.next().toString();
+            currentCreated = Long.parseLong(key.substring(14, 28).trim());
+            if (TipMap.get(key) == Layout) {
+                return currentCreated;
+            }
+            ++id;
+        }
+
+        TreeMap<String, LinearLayout> ScheduleMap;
+        if (current == 0) ScheduleMap = ScheduleMap0;
+        else if (current == 1) ScheduleMap = ScheduleMap1;
+        else ScheduleMap = ScheduleMap2;
+
+        it = ScheduleMap.keySet().iterator();
+        id = 0;
+        while (it.hasNext()) {
+            String key = it.next().toString();
+            currentCreated = Long.parseLong(key.substring(14, 28).trim());
+            if (ScheduleMap.get(key) == Layout) {
+                return currentCreated;
+            }
+            ++id;
+        }
+        return -1;
+    }
+
     void deleteEvent(LinearLayout Layout) {
         TreeMap<String, LinearLayout> TipMap;
         if (current == 0) TipMap = TipMap0;
@@ -364,7 +421,7 @@ public class ViewPagerFragment2 extends Fragment {
                                 + " AND " + "kind = " + KIND_TIP, null
                 );
                 TipLayout[current].removeViewAt((int) id);
-                TipMap.remove(key);
+                it.remove();
             }
             ++id;
         }
@@ -380,16 +437,17 @@ public class ViewPagerFragment2 extends Fragment {
             String key = it.next().toString();
             currentCreated = Long.parseLong(key.substring(14, 28).trim());
             if (ScheduleMap.get(key) == Layout) {
+                closeAlarm((int)currentCreated);
                 cr.delete(DataProviderMetaData.DataTableMetaData.CONTENT_URI,
                         "_id = " + currentCreated
                                 + " AND " + "kind = " + KIND_SCHEDULE, null
                 );
                 ScheduleLayout[current].removeViewAt((int) id);
-                //ScheduleMap.remove(key);
                 it.remove();
             }
             ++id;
         }
+        ((ViewPagerFragment1) ((MainActivity) getActivity()).fragmentList.get(1)).FromSQLToListView();
     }
 
     void updateTipLayput(LinearLayout TipLayout, TreeMap<String, LinearLayout> TipMap) {

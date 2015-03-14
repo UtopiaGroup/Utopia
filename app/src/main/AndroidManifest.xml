@@ -10,6 +10,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <receiver android:name=".CallAlarm"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -24,6 +25,8 @@
             android:name=".STDEntry"
             android:label="@string/STDEntry_name" >
         </activity>
+        <activity android:name=".AlarmAlert"
+            android:label="@string/AlarmAlter_name"/>
 
         <provider
             android:name=".SQL.DataProvider"

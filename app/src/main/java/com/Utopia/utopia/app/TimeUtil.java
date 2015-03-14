@@ -13,24 +13,40 @@ public class TimeUtil {
     public static int dayOfMonth[] = new int[]{
             0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
     };
-    public static long getMillisFromTime(long time)
-    {
+
+    public static long getSecondFromTime(long time) {
+        long year = time / 10000000000L;
+        time %= 10000000000L;
+        long month = time / 100000000L - 1;
+        time %= 100000000L;
+        long date = time / 1000000L;
+        time %= 1000000L;
+        long hour = time / 10000L;
+        time %= 10000L;
+        long minute = time / 100L;
+        time %= 100L;
+        long second = time;
+
+        Calendar c = Calendar.getInstance();
+        c.set((int) year, (int) month, (int) date, (int)hour, (int)minute, (int)second);
+        return c.getTimeInMillis();
+    }
+
+    public static long getMillisFromTime(long time) {
         long today = getToday(time);
         long year = today / 10000000000L;
         today %= 10000000000L;
-        long month = today / 100000000L - 1 ;
+        long month = today / 100000000L - 1;
         today %= 100000000L;
         long date = today / 1000000L;
         today %= 1000000L;
 
         Calendar c = Calendar.getInstance();
-        c.set((int)year,(int)month,(int)date);
+        c.set((int) year, (int) month, (int) date);
         return c.getTimeInMillis();
-
-
     }
-    public static long getTimeFromMillis(long millis)
-    {
+
+    public static long getTimeFromMillis(long millis) {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date(millis));
 
@@ -43,6 +59,7 @@ public class TimeUtil {
 
         return second + 100L * minute + 10000L * hour + 1000000L * date + 100000000L * month + 10000000000L * year;
     }
+
     public static long getCurrentTime() {
         Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
 
