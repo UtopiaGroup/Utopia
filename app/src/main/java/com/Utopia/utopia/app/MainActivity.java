@@ -71,7 +71,7 @@ public class MainActivity extends FragmentActivity {
                 new NetUtil(MainActivity.this).update();
             }
         };
-        //netThread.start();
+        netThread.start();
 
         //停止加载主线程，等待数据下载（可能要动画）
         try {
