@@ -1,7 +1,9 @@
 package com.Utopia.utopia.app;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,7 +18,7 @@ import net.simonvt.numberpicker.NumberPicker;
 /**
  * Created by Administrator on 2014/8/31 0031.
  */
-public class STDEntry extends Activity{
+public class STDEntry extends Activity {
 
     private Button button0, button1, button2, button3, buttonOK;
 
@@ -26,13 +28,14 @@ public class STDEntry extends Activity{
     NumberPicker picker01, picker02, picker11, picker12;
     EditText editText1, editText2, editText3;
 
-    boolean setEnd = false, setTitle = false, setValue = false, setHint = false;
+    ContentResolver cr;
+
+    long _id = -1;
 
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.activity_std_entry);
-
 
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
@@ -60,46 +63,47 @@ public class STDEntry extends Activity{
         picker11.setMaxValue(23);
         picker12.setMinValue(0);
         picker12.setMaxValue(59);
-        /*
-        button0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setEnd = true;
-                button0.setVisibility(View.GONE);
-                l2.setVisibility(View.VISIBLE);
-            }
-        });
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setTitle = true;
-                button1.setVisibility(View.GONE);
-                editText1.setVisibility(View.VISIBLE);
-            }
-        });
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setValue = true;
-                button2.setVisibility(View.GONE);
-                editText2.setVisibility(View.VISIBLE);
-            }
-        });
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setHint = true;
-                button3.setVisibility(View.GONE);
-                editText3.setVisibility(View.VISIBLE);
-            }
-        });
-        */
+        editText3.setText("0");
+
+        cr = getContentResolver();
+
+        try {
+            _id = getIntent().getExtras().getLong("_id");
+            Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin", "end", "finish", "kind", "call"},
+                    "_id = " + _id, null, null);
+            cursor.moveToNext();
+            long created, modified, begin, end, finish, kind, _id, call;
+            String title, value;
+
+            created = cursor.getLong(cursor.getColumnIndex("created"));
+            modified = cursor.getLong(cursor.getColumnIndex("modified"));
+            title = cursor.getString(cursor.getColumnIndex("title"));
+            value = cursor.getString(cursor.getColumnIndex("value"));
+            begin = cursor.getLong(cursor.getColumnIndex("begin"));
+            end = cursor.getLong(cursor.getColumnIndex("end"));
+            finish = cursor.getLong(cursor.getColumnIndex("finish"));
+            kind = cursor.getLong(cursor.getColumnIndex("kind"));
+            call = cursor.getLong(cursor.getColumnIndex("call"));
+
+            picker01.setValue((int)(begin / 10000 % 100));
+            picker02.setValue((int)(begin / 100   % 100));
+            picker11.setValue((int)(end   / 10000 % 100));
+            picker12.setValue((int)(end   / 100   % 100));
+
+            editText1.setText(title);
+            editText2.setText(value);
+            editText3.setText(String.valueOf(call));
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         buttonOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 long created, modified, begin, end, finish, kind,
-                        beginHour, beginMinute, endHour, endMinute;
-                String title, value, hint;
+                        beginHour, beginMinute, endHour, endMinute, call;
+                String title, value;
                 beginHour = picker01.getValue();
                 beginMinute = picker02.getValue();
                 endHour = picker11.getValue();
@@ -111,8 +115,7 @@ public class STDEntry extends Activity{
                 if (title.isEmpty()) title = "未命名";
                 value = editText2.getText().toString();
                 if (value.isEmpty()) value = "";
-                hint = editText3.getText().toString();
-                if (hint.isEmpty()) hint = "";
+                call = Long.valueOf(editText3.getText().toString());
 
                 begin = TimeUtil.getToday(created) + 10000 * beginHour + 100 * beginMinute;
                 end = TimeUtil.getToday(created) + 10000 * endHour + 100 * endMinute;
@@ -121,7 +124,11 @@ public class STDEntry extends Activity{
                 kind = DataProviderMetaData.DataTableMetaData.KIND_SCHEDULE;
 
                 Intent intent = new Intent(STDEntry.this, MainActivity.class);
-                setResult(RESULT_OK, intent);
+                if (_id == -1) setResult(RESULT_OK, intent);
+                else {
+                    setResult(RESULT_FIRST_USER, intent);
+                    intent.putExtra("_id", _id);
+                }
 
                 intent.putExtra("created", created);
                 intent.putExtra("modified", modified);
@@ -131,7 +138,7 @@ public class STDEntry extends Activity{
                 intent.putExtra("end", end);
                 intent.putExtra("finish", finish);
                 intent.putExtra("kind", kind);
-                intent.putExtra("myhint", hint);
+                intent.putExtra("call", call);
                 finish();
             }
         });

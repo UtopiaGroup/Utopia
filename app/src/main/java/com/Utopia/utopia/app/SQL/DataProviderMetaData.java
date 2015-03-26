@@ -40,7 +40,7 @@ public class    DataProviderMetaData {
         public static final String DATA_END = "end";
         public static final String DATA_FINISH = "finish";
         public static final String DATA_KIND = "kind";
-        public static final String DATA_HINT = "myhint";
+        public static final String DATA_CALL = "call";
 
         public static final int KIND_NONE = 0;
         public static final int KIND_NOTE = 1;

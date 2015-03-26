@@ -54,13 +54,13 @@ public class EveryDayPushListActivity extends Activity {
 
         cr = getContentResolver();
         cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                        "end", "finish", "kind", "myhint"}, "kind = " + KIND_ADVERTISE,
+                        "end", "finish", "kind", "call"}, "kind = " + KIND_ADVERTISE,
                 null, "begin DESC");
         for(int i = 0;i < 6*5;i++)
             if(cursor.moveToNext()) {
                 Bundle map = new Bundle();
-                long created, modified, begin, end, finish, kind;
-                String title, value, hint;
+                long created, modified, begin, end, finish, kind, call;
+                String title, value;
 
                 created = cursor.getLong(cursor.getColumnIndex("created"));
                 modified = cursor.getLong(cursor.getColumnIndex("modified"));
@@ -70,7 +70,7 @@ public class EveryDayPushListActivity extends Activity {
                 end = cursor.getLong(cursor.getColumnIndex("end"));
                 finish = cursor.getLong(cursor.getColumnIndex("finish"));
                 kind = cursor.getLong(cursor.getColumnIndex("kind"));
-                hint = cursor.getString(cursor.getColumnIndex("myhint"));
+                call = cursor.getLong(cursor.getColumnIndex("call"));
 
                 map.putLong("created", created);
                 map.putLong("modified", modified);
@@ -81,7 +81,7 @@ public class EveryDayPushListActivity extends Activity {
                 map.putLong("end", end);
                 map.putLong("finish", finish);
                 map.putLong("kind", kind);
-                map.putString("myhint", hint);
+                map.putLong("call", call);
                 listResource.add(map);
 
                 Log.v("Debug", "in update" + listResource.size());
@@ -99,8 +99,8 @@ public class EveryDayPushListActivity extends Activity {
             while(n > 0 && cursor.moveToNext()) {
                 n = n-1;
                 Bundle map = new Bundle();
-                long created, modified, begin, end, finish, kind;
-                String title, value, hint;
+                long created, modified, begin, end, finish, kind, call;
+                String title, value;
 
                 created = cursor.getLong(cursor.getColumnIndex("created"));
                 modified = cursor.getLong(cursor.getColumnIndex("modified"));
@@ -110,7 +110,7 @@ public class EveryDayPushListActivity extends Activity {
                 end = cursor.getLong(cursor.getColumnIndex("end"));
                 finish = cursor.getLong(cursor.getColumnIndex("finish"));
                 kind = cursor.getLong(cursor.getColumnIndex("kind"));
-                hint = cursor.getString(cursor.getColumnIndex("myhint"));
+                call = cursor.getLong(cursor.getColumnIndex("call"));
 
                 map.putLong("created", created);
                 map.putLong("modified", modified);
@@ -121,7 +121,7 @@ public class EveryDayPushListActivity extends Activity {
                 map.putLong("end", end);
                 map.putLong("finish", finish);
                 map.putLong("kind", kind);
-                map.putString("myhint", hint);
+                map.putLong("call", call);
                 listResource.add(map);
                 Log.v("Debug", ""+listResource.size());
                 Log.v("Debug", title);
@@ -147,8 +147,8 @@ public class EveryDayPushListActivity extends Activity {
         while(n > 0 && cursor.moveToNext()) {
             n = n-1;
             Bundle map = new Bundle();
-            long created, modified, begin, end, finish, kind;
-            String title, value, hint;
+            long created, modified, begin, end, finish, kind, call;
+            String title, value;
 
             created = cursor.getLong(cursor.getColumnIndex("created"));
             modified = cursor.getLong(cursor.getColumnIndex("modified"));
@@ -158,7 +158,7 @@ public class EveryDayPushListActivity extends Activity {
             end = cursor.getLong(cursor.getColumnIndex("end"));
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
-            hint = cursor.getString(cursor.getColumnIndex("myhint"));
+            call = cursor.getLong(cursor.getColumnIndex("call"));
 
             map.putLong("created", created);
             map.putLong("modified", modified);
@@ -169,7 +169,7 @@ public class EveryDayPushListActivity extends Activity {
             map.putLong("end", end);
             map.putLong("finish", finish);
             map.putLong("kind", kind);
-            map.putString("myhint", hint);
+            map.putLong("call", call);
             listResource.add(map);
             Log.v("Debug", "in update"+n);
         }

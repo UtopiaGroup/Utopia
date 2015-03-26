@@ -45,8 +45,8 @@ public class DataProvider extends ContentProvider {
                 DataProviderMetaData.DataTableMetaData.DATA_FINISH);
         sDataProjectionMap.put(DataProviderMetaData.DataTableMetaData.DATA_KIND,
                 DataProviderMetaData.DataTableMetaData.DATA_KIND);
-        sDataProjectionMap.put(DataProviderMetaData.DataTableMetaData.DATA_HINT,
-                DataProviderMetaData.DataTableMetaData.DATA_HINT);
+        sDataProjectionMap.put(DataProviderMetaData.DataTableMetaData.DATA_CALL,
+                DataProviderMetaData.DataTableMetaData.DATA_CALL);
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -67,7 +67,7 @@ public class DataProvider extends ContentProvider {
                     + DataProviderMetaData.DataTableMetaData.DATA_END + " INTEGER, "
                     + DataProviderMetaData.DataTableMetaData.DATA_FINISH + " INTEGER, "
                     + DataProviderMetaData.DataTableMetaData.DATA_KIND + " INTEGER, "
-                    + DataProviderMetaData.DataTableMetaData.DATA_HINT + " INTEGER" + ");");
+                    + DataProviderMetaData.DataTableMetaData.DATA_CALL + " INTEGER" + ");");
         }
 
         @Override
@@ -135,8 +135,8 @@ public class DataProvider extends ContentProvider {
             values.put(DataProviderMetaData.DataTableMetaData.DATA_FINISH, 0);
         if (values.containsKey(DataProviderMetaData.DataTableMetaData.DATA_KIND) == false)
             values.put(DataProviderMetaData.DataTableMetaData.DATA_KIND, DataProviderMetaData.DataTableMetaData.KIND_NONE);
-        if (values.containsKey(DataProviderMetaData.DataTableMetaData.DATA_HINT) == false)
-            values.put(DataProviderMetaData.DataTableMetaData.DATA_HINT, "");
+        if (values.containsKey(DataProviderMetaData.DataTableMetaData.DATA_CALL) == false)
+            values.put(DataProviderMetaData.DataTableMetaData.DATA_CALL, "");
 
 
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();

@@ -181,7 +181,8 @@ public class Lunar {
     }
 
     public String toString() {
-        return year + "年" + (leap ? "闰" : "") + chineseNumber[month - 1] + "月" + getChinaDayString(day);
+        return (leap ? "闰" : "") + chineseNumber[month - 1] + "月" + getChinaDayString(day);
+        //return year + "年" + (leap ? "闰" : "") + chineseNumber[month - 1] + "月" + getChinaDayString(day);
     }
 
 }

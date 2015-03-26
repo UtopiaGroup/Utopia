@@ -178,12 +178,12 @@ public class TimeUtil {
         cal.set(Calendar.YEAR, (int) year);
         cal.set(Calendar.MONTH, (int) month - 1);
         cal.set(Calendar.DATE, (int) date);
-        SimpleDateFormat sdf = new SimpleDateFormat(" MM月dd日");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         cal.setTimeZone(TimeZone.getDefault());
 
         lunar = new Lunar(cal);
 
-        return lunar.toString() + sdf.format(cal.getTime());
+        return sdf.format(cal.getTime()) + lunar.toString();
         //这是一起回传的代码
 
         //return lunar.toString();

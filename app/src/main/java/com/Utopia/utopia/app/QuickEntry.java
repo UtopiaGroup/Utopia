@@ -44,8 +44,8 @@ public class QuickEntry extends AlertDialog {
     Bundle getContent()
     {
         long created, modified, begin, end, finish, kind,
-                beginHour, beginMinute, endHour, endMinute;
-        String title, value, hint;
+                beginHour, beginMinute, endHour, endMinute, call;
+        String title, value;
         beginHour = picker01.getValue();
         beginMinute = picker02.getValue();
         endHour = picker11.getValue();
@@ -64,7 +64,7 @@ public class QuickEntry extends AlertDialog {
         if (setEnd) end = TimeUtil.getToday(created) + 10000 * endHour + 100 * endMinute;
         else end = TimeUtil.ENDOfWORLD;
 
-        hint = "";
+        call = 0;
 
         finish = 0;
         if(confirmed)
@@ -80,7 +80,7 @@ public class QuickEntry extends AlertDialog {
         map.putLong("end", end);
         map.putLong("finish", finish);
         map.putLong("kind", kind);
-        map.putString("myhint", hint);
+        map.putLong("call", call);
 
         return map;
         //dismiss : ((ViewPagerFragment2)(((MainActivity) getOwnerActivity()).fragmentList.get(2))).addEvent(map);

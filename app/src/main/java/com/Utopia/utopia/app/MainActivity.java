@@ -200,6 +200,10 @@ public class MainActivity extends FragmentActivity {
         ((ViewPagerFragment2) fragmentList.get(2)).addEvent(map);
     }
 
+    public void updateEvent(Bundle map) {
+        ((ViewPagerFragment2) fragmentList.get(2)).updateEvent(map);
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -216,7 +220,7 @@ public class MainActivity extends FragmentActivity {
                         map.putLong("end", bundle.getLong("end"));
                         map.putLong("finish", bundle.getLong("finish"));
                         map.putLong("kind", bundle.getLong("kind"));
-                        map.putString("myhint", bundle.getString("myhint"));
+                        map.putLong("call", bundle.getLong("call"));
 
                         addEvent(map);
                     }
@@ -231,7 +235,32 @@ public class MainActivity extends FragmentActivity {
                 default:
                     break;
             }
+        } else if (resultCode == RESULT_FIRST_USER) {
+            switch (requestCode) {
+                case REQUEST_STDENTRY:
+                    Bundle bundle = data.getExtras();
+                    if (bundle != null) {
+                        Bundle map = new Bundle();
+
+                        map.putLong("_id", bundle.getLong("_id"));
+                        map.putLong("created", bundle.getLong("created"));
+                        map.putLong("modified", bundle.getLong("modified"));
+                        map.putString("title", bundle.getString("title"));
+                        map.putString("value", bundle.getString("value"));
+                        map.putLong("begin", bundle.getLong("begin"));
+                        map.putLong("end", bundle.getLong("end"));
+                        map.putLong("finish", bundle.getLong("finish"));
+                        map.putLong("kind", bundle.getLong("kind"));
+                        map.putLong("call", bundle.getLong("call"));
+
+                        updateEvent(map);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
+
     }
 
 }
