@@ -26,7 +26,7 @@ public class STDEntry extends Activity {
     LinearLayout l2;
 
     NumberPicker picker01, picker02, picker11, picker12;
-    EditText editText1, editText2, editText3;
+    EditText editText2, editText3;
 
     ContentResolver cr;
 
@@ -47,7 +47,7 @@ public class STDEntry extends Activity {
 
         ll = (LinearLayout) findViewById(R.id.linear_layout);
         l2 = (LinearLayout) findViewById(R.id.linear_layout2);
-        editText1 = (EditText) findViewById(R.id.edit_text1);
+
         editText2 = (EditText) findViewById(R.id.edit_text2);
         editText3 = (EditText) findViewById(R.id.edit_text3);
 
@@ -90,7 +90,6 @@ public class STDEntry extends Activity {
             picker11.setValue((int)(end   / 10000 % 100));
             picker12.setValue((int)(end   / 100   % 100));
 
-            editText1.setText(title);
             editText2.setText(value);
             editText3.setText(String.valueOf(call));
             cursor.close();
@@ -111,8 +110,6 @@ public class STDEntry extends Activity {
 
                 created = TimeUtil.getCurrentTime();
                 modified = TimeUtil.getCurrentTime();
-                title = editText1.getText().toString();
-                if (title.isEmpty()) title = "未命名";
                 value = editText2.getText().toString();
                 if (value.isEmpty()) value = "";
                 call = Long.valueOf(editText3.getText().toString());
@@ -120,6 +117,7 @@ public class STDEntry extends Activity {
                 begin = TimeUtil.getToday(created) + 10000 * beginHour + 100 * beginMinute;
                 end = TimeUtil.getToday(created) + 10000 * endHour + 100 * endMinute;
 
+                title = "";
                 finish = 0;
                 kind = DataProviderMetaData.DataTableMetaData.KIND_SCHEDULE;
 

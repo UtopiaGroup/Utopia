@@ -22,30 +22,20 @@ public class AlarmHelper {
                 .getSystemService(Context.ALARM_SERVICE);
     }
 
-    public void openAlarm(int id, String title, String content, long time) {
+    public void openAlarm(int id, String content, long time) {
         Intent intent = new Intent();
         intent.putExtra("_id", id);
-        intent.putExtra("title", title);
         intent.putExtra("content", content);
         intent.setClass(c, CallAlarm.class);
         PendingIntent pi = PendingIntent.getBroadcast(c, id, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Calendar calendar=Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-
         time = TimeUtil.getSecondFromTime(time);
-        //time = calendar.getTimeInMillis();
-        Log.v("DEBUG", "time = " + time + "& now is = " +  calendar.getTimeInMillis());
-        //1426304880452
-        //1426304940309
         mAlarmManager.set(AlarmManager.RTC_WAKEUP, time, pi);
     }
 
-    public void closeAlarm(int id, String title, String content) {
+    public void closeAlarm(int id, String content) {
         Intent intent = new Intent();
         intent.putExtra("_id", id);
-        intent.putExtra("title", title);
         intent.putExtra("content", content);
         intent.setClass(c, CallAlarm.class);
         PendingIntent pi = PendingIntent.getBroadcast(c, id, intent, 0);

@@ -263,17 +263,19 @@ public class ViewPagerFragment2 extends Fragment {
 
     public void openAlarm(int id) {
         AlarmHelper ah = new AlarmHelper(getActivity().getApplicationContext());
-        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"_id", "begin", "title", "value"}, "_id = " + id, null, "begin ASC");
+        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"_id", "begin", "title", "value", "call"}, "_id = " + id, null, "begin ASC");
         cursor.moveToNext();
-        ah.openAlarm(id, cursor.getString(cursor.getColumnIndex("title")), cursor.getString(cursor.getColumnIndex("value")), cursor.getLong(cursor.getColumnIndex("begin")));
+        long begin = cursor.getLong(cursor.getColumnIndex("begin"));
+        long call = cursor.getLong(cursor.getColumnIndex("call"));
+        ah.openAlarm(id, cursor.getString(cursor.getColumnIndex("value")), TimeUtil.getTimeFromMillis(TimeUtil.getMillisFromTime(begin) - 60000 * call));
         cursor.close();
     }
 
     public void closeAlarm(int id) {
         AlarmHelper ah = new AlarmHelper(getActivity().getApplicationContext());
-        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"_id", "begin", "title", "value"}, "_id = " + id, null, "begin ASC");
+        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"_id", "begin", "title", "value", "call"}, "_id = " + id, null, "begin ASC");
         cursor.moveToNext();
-        ah.closeAlarm(id, cursor.getString(cursor.getColumnIndex("title")), cursor.getString(cursor.getColumnIndex("value")));
+        ah.closeAlarm(id, cursor.getString(cursor.getColumnIndex("value")));
         cursor.close();
     }
 
