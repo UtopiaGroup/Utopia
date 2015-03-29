@@ -1,7 +1,6 @@
 package com.Utopia.utopia.app;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +21,7 @@ public class QuickEntry extends AlertDialog {
     Button button1;
     Button button2;
     Button button3;
+    Button button4;
     LinearLayout ll;
     LinearLayout l2;
     EditText editText;
@@ -103,6 +103,8 @@ public class QuickEntry extends AlertDialog {
         button1 = (Button) findViewById(R.id.button1);
         button2 = (Button) findViewById(R.id.button2);
         button3 = (Button) findViewById(R.id.button3);
+        button4 = (Button) findViewById(R.id.button_disable_end_time);
+
 
         ll = (LinearLayout) findViewById(R.id.linear_layout);
         l2 = (LinearLayout) findViewById(R.id.linear_layout2);
@@ -139,10 +141,18 @@ public class QuickEntry extends AlertDialog {
                 setValue = true;
                 button2.setVisibility(View.GONE);
                 editText.setVisibility(View.VISIBLE);
-
-
             }
         });
+
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setEnd = false;
+                button1.setVisibility(View.VISIBLE);
+                l2.setVisibility(View.GONE);
+            }
+        });
+
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,4 +162,5 @@ public class QuickEntry extends AlertDialog {
             }
         });
     }
+    public boolean isConfirmed() { return confirmed;}
 }

@@ -206,8 +206,11 @@ public class ViewPagerFragment2 extends Fragment {
                                     qe.setOnDismissListener(new DialogInterface.OnDismissListener() {
                                         @Override
                                         public void onDismiss(DialogInterface dialog) {
-                                            Log.v("debug", String.valueOf(qe.getContent().get("begin")));
-                                            addEvent(qe.getContent());
+                                            if(qe.isConfirmed()) {
+                                                Log.v("debug", String.valueOf(qe.getContent().get("begin")));
+                                                Log.v("debug", String.valueOf(qe.getContent().get("end")));
+                                                addEvent(qe.getContent());
+                                            }
                                         }
                                     });
                                 } else
@@ -340,11 +343,12 @@ public class ViewPagerFragment2 extends Fragment {
             begin = begin % 1000000 + TimeUtil.getTomorrow(currentTime);
         else
             begin = begin % 1000000 + currentTime;
-
-        if (end % 1000000 < startTime * 10000)
-            end = end % 1000000 + TimeUtil.getTomorrow(currentTime);
-        else
-            end = end % 1000000 + currentTime;
+        if(end != TimeUtil.ENDOfWORLD) {
+            if (end % 1000000 < startTime * 10000)
+                end = end % 1000000 + TimeUtil.getTomorrow(currentTime);
+            else
+                end = end % 1000000 + currentTime;
+        }
 
         map.putLong("begin", begin);
         map.putLong("end", end);
@@ -383,11 +387,12 @@ public class ViewPagerFragment2 extends Fragment {
             begin = begin % 1000000 + TimeUtil.getTomorrow(currentTime);
         else
             begin = begin % 1000000 + currentTime;
-
-        if (end % 1000000 < startTime * 10000)
-            end = end % 1000000 + TimeUtil.getTomorrow(currentTime);
-        else
-            end = end % 1000000 + currentTime;
+        if(end != TimeUtil.ENDOfWORLD) {
+            if (end % 1000000 < startTime * 10000)
+                end = end % 1000000 + TimeUtil.getTomorrow(currentTime);
+            else
+                end = end % 1000000 + currentTime;
+        }
 
         map.putLong("begin", begin);
         map.putLong("end", end);
@@ -601,7 +606,11 @@ public class ViewPagerFragment2 extends Fragment {
         TextView tvEndTime = (TextView) newSchedule.findViewById(R.id.time_line_item_end_time);
         tvContent.setText(value);
         tvBeginTime.setText(TimeUtil.toTime(begin));
-        tvEndTime.setText(TimeUtil.toTime(end));
+        Log.i("before setText","" + end);
+        if(end != TimeUtil.ENDOfWORLD)
+            tvEndTime.setText(TimeUtil.toTime(end));
+        else
+            tvEndTime.setText(" ");
 
         //20140816105401
         Iterator it = ScheduleMap.keySet().iterator();

@@ -18,6 +18,7 @@
         android:textColor="#6e6869"
         android:text="快速创建"/>
     <LinearLayout
+        android:layout_marginLeft="14dp"
         android:id="@+id/linear_layout"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
@@ -43,16 +44,24 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.Holo.Button.Borderless"
+            android:text=" "
+            />
 
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginLeft="14dp"
         android:id="@+id/linear_layout2"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:visibility="gone"
+
         >
         <TextView
             android:layout_gravity="center_vertical"
@@ -76,6 +85,16 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/button_disable_end_time"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="X"
+            android:textColor="@color/red"
+            android:layout_gravity="center_vertical"
+            style="@android:style/Widget.Holo.Button.Borderless"
+            />
 
     </LinearLayout>
 
