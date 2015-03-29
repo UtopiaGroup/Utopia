@@ -349,6 +349,8 @@ public class ViewPagerFragment2 extends Fragment {
         map.putLong("begin", begin);
         map.putLong("end", end);
 
+        closeAlarm((int)_id);
+
         ContentValues cv = new ContentValues();
         cv.put("created", created);
         cv.put("begin", begin);

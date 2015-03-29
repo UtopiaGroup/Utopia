@@ -33,7 +33,7 @@ public class TimeUtil {
     }
 
     public static long getMillisFromTime(long time) {
-        long today = getToday(time);
+        long today = time;
         long year = today / 10000000000L;
         today %= 10000000000L;
         long month = today / 100000000L - 1;
@@ -41,8 +41,15 @@ public class TimeUtil {
         long date = today / 1000000L;
         today %= 1000000L;
 
+        long hour = today / 10000L;
+        today %= 10000L;
+        long minute = today / 100L;
+        today %= 100L;
+        long second = today;
+
+
         Calendar c = Calendar.getInstance();
-        c.set((int) year, (int) month, (int) date);
+        c.set((int) year, (int) month, (int) date, (int)hour, (int)minute, (int)second);
         return c.getTimeInMillis();
     }
 

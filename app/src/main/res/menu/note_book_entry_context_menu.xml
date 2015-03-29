@@ -2,8 +2,8 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/change_note"
-        android:title="change"/>
+        android:title="更改"/>
 
     <item android:id="@+id/delete_note"
-        android:title="delete"/>
+        android:title="删除"/>
 </menu>

@@ -2,14 +2,14 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/change_schedule"
-        android:title="change"/>
+        android:title="更改"/>
 
     <item android:id="@+id/delete_schedule"
-        android:title="delete"/>
+        android:title="删除"/>
 
     <item android:id="@+id/openalarm_schedule"
-        android:title="openalarm"/>
+        android:title="打开闹钟"/>
 
     <item android:id="@+id/closealarm_schedule"
-        android:title="closealarm"/>
+        android:title="关闭闹钟"/>
 </menu>

@@ -35,7 +35,7 @@ public class CalendarActivity extends ActionBarActivity {
                 long changedMillis = view.getDate();
                 if(currentYear != year || currentMonth != month || currentDayOfMonth != dayOfMonth) {
                     Intent intent = new Intent(CalendarActivity.this,MainActivity.class);
-                     intent.putExtra("millis", changedMillis);
+                    intent.putExtra("millis", changedMillis);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
