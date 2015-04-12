@@ -12,7 +12,9 @@ import android.widget.SimpleAdapter;
 
 import com.Utopia.utopia.app.SQL.DataProviderMetaData;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,14 +55,21 @@ public class ViewPagerFragment1 extends Fragment {
             Map<String, Object> map = new HashMap<String, Object>();
             String value;
             value = cursor.getString(cursor.getColumnIndex("value"));
+            long created;
+            created = cursor.getLong(cursor.getColumnIndex("created"));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+            String str1 = sdf.format(new Date(TimeUtil.getMillisFromTime(created)));
+            String str2 = TimeUtil.toTime(created);
+
+            map.put("created",str1+str2+" ");
             map.put("value", value);
 
             listResource.add(map);
         }
         cursor.close();
         if (count > 0) {
-            sa = new SimpleAdapter(getActivity(), listResource, R.layout.notepad_listitem,
-                    new String[]{"value"}, new int[]{R.id.EventTextViewM});
+            sa = new SimpleAdapter(getActivity(), listResource, R.layout.schedule_list_item,
+                    new String[]{"created","value"}, new int[]{R.id.time_schedule_list,R.id.content_schedule_list});
             lv0.setAdapter(sa);
         }
     }

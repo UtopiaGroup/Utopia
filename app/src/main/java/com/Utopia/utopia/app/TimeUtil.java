@@ -153,9 +153,12 @@ public class TimeUtil {
         time %= 100L;
         long second = time;
 
-        return (hour < 10 ? "0" : "") + hour + ":" +
+        /*return (hour < 10 ? "0" : "") + hour + ":" +
                 (minute < 10 ? "0" : "") + minute + ":" +
                 (second < 10 ? "0" : "") + second;
+                */
+        return (hour < 10 ? "0" : "") + hour + ":" +
+        (minute < 10 ? "0" : "") + minute;
     }
 
     public static int toSecond(long time) {
