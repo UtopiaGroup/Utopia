@@ -12,10 +12,10 @@
     <string name="score">评分</string>
     <string name="feedback">反馈</string>
     <string name="about">关于</string>
-    <string name="everyday_push_title">养生博览</string>
+    <string name="everyday_push_title">锦绣容妆</string>
     <string name="health_list_title">朝容夕颜</string>
     <string name="title_activity_health_tip_list">朝容夕颜</string>
-    <string name="title_activity_every_day_push_list">养生博览</string>
+    <string name="title_activity_every_day_push_list">锦绣容妆</string>
     <string name="page0_title">云彩笺</string>
     <string name="page1_title">红颜录</string>
     <string name="page2_title">粉黛行</string>
@@ -25,4 +25,12 @@
     <string name="title_activity_calendar">月历</string>
     <string name="AlarmAlter_name">闹钟</string>
 
+
+    <string-array name="spinner">
+        <item>准时提醒</item>
+        <item>提前5分钟</item>
+        <item>提前10分钟</item>
+        <item>提前15分钟</item>
+        <item>提前30分钟</item>
+    </string-array>
 </resources>

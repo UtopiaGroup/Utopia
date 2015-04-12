@@ -120,6 +120,25 @@
         android:layout_height="wrap_content"
         android:numeric="integer"
         android:hint="日程提示"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="提醒方式"/>
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner">
+    </Spinner>
+
+
+    </LinearLayout>
+
     <Button
         android:layout_gravity="center_horizontal"
         android:layout_width="200dp"

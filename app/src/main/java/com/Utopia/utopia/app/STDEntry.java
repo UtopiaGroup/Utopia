@@ -5,11 +5,15 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import com.Utopia.utopia.app.SQL.DataProviderMetaData;
 
@@ -27,15 +31,16 @@ public class STDEntry extends Activity {
 
     NumberPicker picker01, picker02, picker11, picker12;
     EditText editText2, editText3;
-
+    Spinner spinner;
     ContentResolver cr;
     boolean setEnd;
-
+    int call_time;
     long _id = -1;
 
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
+        call_time = 0;
         setContentView(R.layout.activity_std_entry);
         setEnd = false;
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
@@ -51,7 +56,7 @@ public class STDEntry extends Activity {
         l2 = (LinearLayout) findViewById(R.id.linear_layout2);
 
         editText2 = (EditText) findViewById(R.id.edit_text2);
-        editText3 = (EditText) findViewById(R.id.edit_text3);
+        //editText3 = (EditText) findViewById(R.id.edit_text3);
 
         picker01 = (NumberPicker) findViewById(R.id.picker01);
         picker02 = (NumberPicker) findViewById(R.id.picker02);
@@ -65,7 +70,43 @@ public class STDEntry extends Activity {
         picker11.setMaxValue(23);
         picker12.setMinValue(0);
         picker12.setMaxValue(59);
-        editText3.setText("0");
+        //editText3.setText("0");
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.spinner, android.R.layout.simple_spinner_item);
+
+        spinner = (Spinner) findViewById(R.id.spinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("spinner item", "" + position);
+                switch (position) {
+                    case 0:
+                        call_time = 0;
+                        break;
+                    case 1:
+                        call_time = 5;
+                        break;
+                    case 2:
+                        call_time = 10;
+                        break;
+                    case 3:
+                        call_time = 15;
+                        break;
+                    case 4:
+                        call_time = 30;
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
 
         cr = getContentResolver();
         long created, modified, begin, end, finish, kind, call;
@@ -121,7 +162,7 @@ public class STDEntry extends Activity {
         }
 
         editText2.setText(value);
-        editText3.setText(String.valueOf(call));
+        //editText3.setText(String.valueOf(call));
 
 
         button1.setOnClickListener(new View.OnClickListener() {
@@ -157,8 +198,8 @@ public class STDEntry extends Activity {
                 modified = TimeUtil.getCurrentTime();
                 value = editText2.getText().toString();
                 if (value.isEmpty()) value = "";
-                call = Long.valueOf(editText3.getText().toString());
-
+                //call = Long.valueOf(editText3.getText().toString());
+                call = call_time;
                 begin = TimeUtil.getToday(created) + 10000 * beginHour + 100 * beginMinute;
                 if(setEnd)
                     end = TimeUtil.getToday(created) + 10000 * endHour + 100 * endMinute;
