@@ -12,10 +12,7 @@ import android.widget.SimpleAdapter;
 
 import com.Utopia.utopia.app.SQL.DataProviderMetaData;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +23,7 @@ public class ViewPagerFragment1 extends Fragment {
     private ContentResolver cr;
     private SimpleAdapter sa;
     List<Map<String, Object>> listResource = new ArrayList<Map<String, Object>>();
+    ArrayList<ArrayList<Bundle> > all;
     int count;
 
     public ViewPagerFragment1() {
@@ -47,10 +45,31 @@ public class ViewPagerFragment1 extends Fragment {
     public void FromSQLToListView() {
         count = 0;
         Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind", "call"}, "kind = " + KIND_SCHEDULE, null, "begin asc");
+                "end", "finish", "kind", "call"}, "kind = " + KIND_SCHEDULE, null, "begin desc");
         listResource.clear();
+        all = new ArrayList<ArrayList<Bundle>>();
+        ArrayList<Bundle> day = new ArrayList<Bundle>();
+
+        long last_entry_day = TimeUtil.ENDOfWORLD;
 
         while (cursor.moveToNext()) {
+            long begin_time = cursor.getLong(cursor.getColumnIndex("begin"));
+            long begin_day = TimeUtil.getToday(begin_time);
+            if (begin_day != last_entry_day) {
+                day = new ArrayList<Bundle>();
+                all.add(day);
+                last_entry_day = begin_day;
+            }
+
+            String content = cursor.getString(cursor.getColumnIndex("value"));
+            Bundle bundle = new Bundle();
+            bundle.putLong("begin",begin_time);
+            bundle.putString("content", content);
+            day.add(bundle);
+            count++;
+        }
+
+/*
             ++count;
             Map<String, Object> map = new HashMap<String, Object>();
             String value;
@@ -65,11 +84,16 @@ public class ViewPagerFragment1 extends Fragment {
             map.put("value", value);
 
             listResource.add(map);
-        }
+            */
+
         cursor.close();
         if (count > 0) {
+            //TODO modify adapter
+            sa = new ScheduleListItemAdapter(getActivity(),all,R.layout.schedule_list_item,null,null);
+            /*
             sa = new SimpleAdapter(getActivity(), listResource, R.layout.schedule_list_item,
                     new String[]{"created","value"}, new int[]{R.id.time_schedule_list,R.id.content_schedule_list});
+                    */
             lv0.setAdapter(sa);
         }
     }

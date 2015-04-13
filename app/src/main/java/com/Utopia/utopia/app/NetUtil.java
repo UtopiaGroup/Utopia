@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.Utopia.utopia.app.SQL.DataProviderMetaData;
 
@@ -81,7 +82,9 @@ public class NetUtil {
         String[] lines = data.split("\n");
         for (int i = 0; i < lines.length; i += 3) {
             long kind = KIND_TIP;
-            long begin = Long.parseLong(lines[i]) * 1000000L + 120000L;
+            Log.i("i",""+i);
+            long begin = Long.parseLong(lines[i]) * 1000000L + 80000L;
+            long begin2 = Long.parseLong(lines[i]) * 1000000L + 160000L;
             String title = lines[i + 1];
 
             ContentValues cv = new ContentValues();
@@ -94,7 +97,7 @@ public class NetUtil {
             title = lines[i + 2];
 
             cv = new ContentValues();
-            cv.put("begin", begin);
+            cv.put("begin", begin2);
             cv.put("kind", kind);
             cv.put("title", title);
 
