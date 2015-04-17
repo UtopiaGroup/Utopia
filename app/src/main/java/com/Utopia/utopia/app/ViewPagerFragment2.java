@@ -154,71 +154,90 @@ public class ViewPagerFragment2 extends Fragment {
                             break;
                         case MotionEvent.ACTION_UP:
                             //10pix长度才成其为滑动
-                            int endY = (int) (event.getY());
-                            if (beginY > endY + 10) {
-                                if (Scroll[current].getChildAt(0).getMeasuredHeight() <= Scroll[current].getHeight() + Scroll[current].getScrollY()) {
-                                    mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_up_in));
-                                    mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_up_out));
-                                    mViewFlipper.showNext();
-                                    current = Next[current];
-                                    currentTime = TimeUtil.getTomorrow(currentTime);
-                                    int tomorrow = Next[current];
-                                    long tomorrowTime = TimeUtil.getTomorrow(currentTime);
-                                    if (tomorrow == 0)
-                                        FromSQLToListView(tomorrowTime, Scroll[0], BothLayout[0], TipLayout[0], ScheduleLayout[0], edpvPagerAdapter[0], TipMap0, ScheduleMap0);
-                                    else if (tomorrow == 1)
-                                        FromSQLToListView(tomorrowTime, Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], edpvPagerAdapter[1], TipMap1, ScheduleMap1);
-                                    else
-                                        FromSQLToListView(tomorrowTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], edpvPagerAdapter[2], TipMap2, ScheduleMap2);
-                                }
-                            } else if (beginY < endY - 10) {
-                                if (Scroll[current].getScrollY() <= 0) {
-                                    mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_down_in));
-                                    mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_down_out));
-                                    mViewFlipper.showPrevious();
-                                    current = Prev[current];
-                                    currentTime = TimeUtil.getYesterday(currentTime);
-                                    int yesterday = Prev[current];
-                                    long yesterdayTime = TimeUtil.getYesterday(currentTime);
-                                    if (yesterday == 0)
-                                        FromSQLToListView(yesterdayTime, Scroll[0], BothLayout[0], TipLayout[0], ScheduleLayout[0], edpvPagerAdapter[0], TipMap0, ScheduleMap0);
-                                    else if (yesterday == 1)
-                                        FromSQLToListView(yesterdayTime, Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], edpvPagerAdapter[1], TipMap1, ScheduleMap1);
-                                    else
-                                        FromSQLToListView(yesterdayTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], edpvPagerAdapter[2], TipMap2, ScheduleMap2);
-                                }
-                            } else {
-                                if (!Scroll[current].isScrolling()) {
-                                    float yPos = event.getY() + Scroll[current].getScrollY() - adHeight;
-                                    Log.v("YPos", " " + event.getY() + " " + Scroll[current].getScrollY() + " " + adHeight);
 
-                                    int totalSecond = (int) (yPos / imageLength * 86400);
+                        {
 
-                                    Log.v("totalLength", " " + totalSecond);
+                            float yPos = event.getY() + Scroll[current].getScrollY() - adHeight;
+                            Log.v("YPos", " " + event.getY() + " " + Scroll[current].getScrollY() + " " + adHeight);
 
-                                    int hour = totalSecond / 3600 + 6;
-                                    //int minute = ((totalSecond % 3600) % 60) / 20 * 20;
-                                    int minute = ((totalSecond % 3600) / 60 / 20) * 20;
-                                    Log.v("quick time", " " + hour + " " + minute);
-                                    qe = new QuickEntry(getActivity(), hour, minute);
-                                    //Log.i("in actionUp: isScrolling", String.valueOf(Scroll[current].isScrolling()));
-                                    qe.show();
-                                    qe.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                        @Override
-                                        public void onDismiss(DialogInterface dialog) {
-                                            if(qe.isConfirmed()) {
-                                                Log.v("debug", String.valueOf(qe.getContent().get("begin")));
-                                                Log.v("debug", String.valueOf(qe.getContent().get("end")));
-                                                addEvent(qe.getContent());
-                                            }
-                                        }
-                                    });
-                                } else
-                                    Scroll[current].setScrolling(false);
+                            int totalSecond = (int) (yPos / imageLength * 86400);
+
+                            Log.v("totalLength", " " + totalSecond);
+
+                            int hour = totalSecond / 3600 + 6;
+                            //int minute = ((totalSecond % 3600) % 60) / 20 * 20;
+                            int minute = ((totalSecond % 3600) / 60 / 20) * 20;
+                            Log.v("quick time", " " + hour + " " + minute);
+                            if (hour >= 24)
+                                changeTitle(TimeUtil.getTomorrow(currentTime));
+                            else
+                                changeTitle(currentTime);
+                        }
+
+
+                        int endY = (int) (event.getY());
+                        if (beginY > endY + 10) {
+                            if (Scroll[current].getChildAt(0).getMeasuredHeight() <= Scroll[current].getHeight() + Scroll[current].getScrollY()) {
+                                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_up_in));
+                                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_up_out));
+                                mViewFlipper.showNext();
+                                current = Next[current];
+                                currentTime = TimeUtil.getTomorrow(currentTime);
+                                int tomorrow = Next[current];
+                                long tomorrowTime = TimeUtil.getTomorrow(currentTime);
+                                if (tomorrow == 0)
+                                    FromSQLToListView(tomorrowTime, Scroll[0], BothLayout[0], TipLayout[0], ScheduleLayout[0], edpvPagerAdapter[0], TipMap0, ScheduleMap0);
+                                else if (tomorrow == 1)
+                                    FromSQLToListView(tomorrowTime, Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], edpvPagerAdapter[1], TipMap1, ScheduleMap1);
+                                else
+                                    FromSQLToListView(tomorrowTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], edpvPagerAdapter[2], TipMap2, ScheduleMap2);
                             }
+                        } else if (beginY < endY - 10) {
+                            if (Scroll[current].getScrollY() <= 0) {
+                                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_down_in));
+                                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_down_out));
+                                mViewFlipper.showPrevious();
+                                current = Prev[current];
+                                currentTime = TimeUtil.getYesterday(currentTime);
+                                int yesterday = Prev[current];
+                                long yesterdayTime = TimeUtil.getYesterday(currentTime);
+                                if (yesterday == 0)
+                                    FromSQLToListView(yesterdayTime, Scroll[0], BothLayout[0], TipLayout[0], ScheduleLayout[0], edpvPagerAdapter[0], TipMap0, ScheduleMap0);
+                                else if (yesterday == 1)
+                                    FromSQLToListView(yesterdayTime, Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], edpvPagerAdapter[1], TipMap1, ScheduleMap1);
+                                else
+                                    FromSQLToListView(yesterdayTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], edpvPagerAdapter[2], TipMap2, ScheduleMap2);
+                            }
+                        } else {
+                            if (!Scroll[current].isScrolling()) {
+                                float yPos = event.getY() + Scroll[current].getScrollY() - adHeight;
+                                Log.v("YPos", " " + event.getY() + " " + Scroll[current].getScrollY() + " " + adHeight);
 
-                            changeTitle(currentTime);
-                            break;
+                                int totalSecond = (int) (yPos / imageLength * 86400);
+
+                                Log.v("totalLength", " " + totalSecond);
+
+                                int hour = totalSecond / 3600 + 6;
+                                //int minute = ((totalSecond % 3600) % 60) / 20 * 20;
+                                int minute = ((totalSecond % 3600) / 60 / 20) * 20;
+                                Log.v("quick time", " " + hour + " " + minute);
+                                qe = new QuickEntry(getActivity(), hour, minute);
+                                //Log.i("in actionUp: isScrolling", String.valueOf(Scroll[current].isScrolling()));
+                                qe.show();
+                                qe.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        if (qe.isConfirmed()) {
+                                            Log.v("debug", String.valueOf(qe.getContent().get("begin")));
+                                            Log.v("debug", String.valueOf(qe.getContent().get("end")));
+                                            addEvent(qe.getContent());
+                                        }
+                                    }
+                                });
+                            } else
+                                Scroll[current].setScrolling(false);
+                        }
+                        break;
                     }
                     return false;
                 }
@@ -343,7 +362,7 @@ public class ViewPagerFragment2 extends Fragment {
             begin = begin % 1000000 + TimeUtil.getTomorrow(currentTime);
         else
             begin = begin % 1000000 + currentTime;
-        if(end != TimeUtil.ENDOfWORLD) {
+        if (end != TimeUtil.ENDOfWORLD) {
             if (end % 1000000 < startTime * 10000)
                 end = end % 1000000 + TimeUtil.getTomorrow(currentTime);
             else
@@ -353,7 +372,7 @@ public class ViewPagerFragment2 extends Fragment {
         map.putLong("begin", begin);
         map.putLong("end", end);
 
-        closeAlarm((int)_id);
+        closeAlarm((int) _id);
 
         ContentValues cv = new ContentValues();
         cv.put("created", created);
@@ -387,7 +406,7 @@ public class ViewPagerFragment2 extends Fragment {
             begin = begin % 1000000 + TimeUtil.getTomorrow(currentTime);
         else
             begin = begin % 1000000 + currentTime;
-        if(end != TimeUtil.ENDOfWORLD) {
+        if (end != TimeUtil.ENDOfWORLD) {
             if (end % 1000000 < startTime * 10000)
                 end = end % 1000000 + TimeUtil.getTomorrow(currentTime);
             else
@@ -606,8 +625,8 @@ public class ViewPagerFragment2 extends Fragment {
         TextView tvEndTime = (TextView) newSchedule.findViewById(R.id.time_line_item_end_time);
         tvContent.setText(value);
         tvBeginTime.setText(TimeUtil.toTime(begin));
-        Log.i("before setText","" + end);
-        if(end != TimeUtil.ENDOfWORLD)
+        Log.i("before setText", "" + end);
+        if (end != TimeUtil.ENDOfWORLD)
             tvEndTime.setText(TimeUtil.toTime(end));
         else
             tvEndTime.setText(" ");
